@@ -194,44 +194,22 @@ export const ButtonSecondary = styled(Base)`
 `
 
 export const ButtonPink = styled(Base)`
-  background-color: ${({ theme }) => theme.primaryPink};
+  background-color: ${({ theme }) => theme.primary1};
   color: white;
 
   &:focus {
-    box-shadow: 0 0 0 1pt ${({ theme }) => darken(0.05, theme.primaryPink)};
-    background-color: ${({ theme }) => darken(0.05, theme.primaryPink)};
+    box-shadow: 0 0 0 1pt ${({ theme }) => darken(0.05, theme.primary1)};
+    background-color: ${({ theme }) => darken(0.05, theme.primary1)};
   }
   &:hover {
-    background-color: ${({ theme }) => darken(0.05, theme.primaryPink)};
+    background-color: ${({ theme }) => darken(0.05, theme.primary1)};
   }
   &:active {
-    box-shadow: 0 0 0 1pt ${({ theme }) => darken(0.1, theme.primaryPink)};
-    background-color: ${({ theme }) => darken(0.1, theme.primaryPink)};
+    box-shadow: 0 0 0 1pt ${({ theme }) => darken(0.1, theme.primary1)};
+    background-color: ${({ theme }) => darken(0.1, theme.primary1)};
   }
   &:disabled {
-    background-color: ${({ theme }) => theme.primaryPink};
-    opacity: 50%;
-    cursor: auto;
-  }
-`
-
-export const ButtonBlue = styled(Base)`
-  background-color: ${({ theme }) => theme.primaryBlue};
-  color: white;
-
-  &:focus {
-    box-shadow: 0 0 0 1pt ${({ theme }) => darken(0.05, theme.primaryBlue)};
-    background-color: ${({ theme }) => darken(0.05, theme.primaryBlue)};
-  }
-  &:hover {
-    background-color: ${({ theme }) => darken(0.05, theme.primaryBlue)};
-  }
-  &:active {
-    box-shadow: 0 0 0 1pt ${({ theme }) => darken(0.1, theme.primaryBlue)};
-    background-color: ${({ theme }) => darken(0.1, theme.primaryBlue)};
-  }
-  &:disabled {
-    background-color: ${({ theme }) => theme.primaryBlue};
+    background-color: ${({ theme }) => theme.primary1};
     opacity: 50%;
     cursor: auto;
   }

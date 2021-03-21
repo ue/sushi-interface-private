@@ -1,7 +1,5 @@
-import './styles.css'
-import 'inter-ui'
-import '@fontsource/dm-sans/700.css'
 import { createWeb3ReactRoot, Web3ReactProvider } from '@web3-react/core'
+import 'inter-ui'
 import React, { StrictMode } from 'react'
 import { isMobile } from 'react-device-detect'
 import ReactDOM from 'react-dom'
@@ -20,6 +18,9 @@ import TransactionUpdater from './state/transactions/updater'
 import UserUpdater from './state/user/updater'
 import ThemeProvider, { FixedGlobalStyle, ThemedGlobalStyle } from './theme'
 import getLibrary from './utils/getLibrary'
+
+import '@fontsource/dm-sans'
+import './styles.css'
 
 const Web3ProviderNetwork = createWeb3ReactRoot(NetworkContextName)
 

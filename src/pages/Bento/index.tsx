@@ -37,7 +37,7 @@ const StyledBaseCard = styled(BaseCard)`
   position: relative;
 `
 
-export default function Bento() {
+export default function Pool() {
   const theme = useContext(ThemeContext)
   const { account } = useActiveWeb3React()
   return (

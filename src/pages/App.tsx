@@ -37,36 +37,30 @@ import { OpenClaimAddressModalAndRedirectToSwap, RedirectPathToSwapOnly, Redirec
 import Test from './Test'
 
 import SushiBar from './SushiBar'
-
-import Bento from './BentoBox'
-import BentoBalances from './BentoBoxBalances'
-
+import Bento from './Bento'
+import BentoBalances from './BentoBalances'
 import Kashi from './Kashi'
 import KashiPair from './Kashi/Pair'
 import KashiPositions from './Kashi/Positions'
 
 // Additional Tools
 import Tools from './Tools'
-
 import Saave from './Saave'
 
 import ComingSoonModal from '../components/ComingSoonModal'
-
-import { KashiProvider } from 'kashi/context'
+import { KashiProvider } from '../context/kashi'
 
 const AppWrapper = styled.div`
   display: flex;
   flex-flow: column;
   align-items: flex-start;
   overflow-x: hidden;
-  height: calc(100vh);
 `
 
 const HeaderWrapper = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
   width: 100%;
   justify-content: space-between;
-  border-bottom: 1px solid rgb(26, 29, 41);
 `
 
 const BodyWrapper = styled.div`
@@ -74,7 +68,6 @@ const BodyWrapper = styled.div`
   flex-direction: column;
   width: 100%;
   padding-top: 50px;
-  padding-bottom: 50px;
   align-items: center;
   flex: 1;
   overflow-y: auto;
@@ -132,7 +125,15 @@ export default function App() {
               <Switch>
                 {process.env.NODE_ENV === 'development' && <Route exact strict path="/test" component={Test} />}
                 {/* BentoApps */}
-
+                {/* {chainId === ChainId.ROPSTEN && (
+                  <Switch>
+                    <Route exact strict path="/bento" component={Bento} />
+                    <Route exact strict path="/bento/kashi" component={Kashi} />
+                    <Route exact strict path="/bento/kashi/positions" component={KashiPositions} />
+                    <Route exact strict path="/bento/kashi/:pairAddress" component={KashiPair} />
+                    <Route exact strict path="/bento/balances" component={BentoBalances} />
+                  </Switch>
+                )} */}
                 {chainId === ChainId.ROPSTEN && <Route exact strict path="/bento" component={Bento} />}
                 {chainId === ChainId.ROPSTEN && <Route exact strict path="/bento/kashi" component={Kashi} />}
                 {chainId === ChainId.ROPSTEN && (
@@ -170,7 +171,8 @@ export default function App() {
               </Switch>
             </KashiProvider>
           </Web3ReactManager>
-          {/* <Marginer /> */}
+
+          <Marginer />
         </BodyWrapper>
       </AppWrapper>
     </Suspense>

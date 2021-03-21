@@ -2,9 +2,9 @@ import React from 'react'
 import styled from 'styled-components'
 import { transparentize } from 'polished'
 import { DarkCard, BaseCard } from 'components/Card'
-import { useKashiCounts, useKashiPairs } from 'kashi/context'
+import { useKashiCounts, useKashiPairs } from 'context/kashi'
 import { formattedNum } from 'utils'
-import sumBy from 'lodash/sumBy'
+import _ from 'lodash'
 
 const StyledBaseCard = styled(BaseCard)`
   border: none
@@ -16,9 +16,12 @@ const StyledBaseCard = styled(BaseCard)`
 export default function Header() {
   const counts = useKashiCounts()
   const pairs = useKashiPairs()
-  const totalNetWorth = sumBy(pairs, function(o) {
+
+  const totalNetWorth = _.sumBy(pairs, function(o) {
     return o.user.pairNetWorth.usdString
   })
+  //console.log('totalNetWorth:', totalNetWorth)
+
   return (
     <div>
       <div className="flex-col space-y-8">

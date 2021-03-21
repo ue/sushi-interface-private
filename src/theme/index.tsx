@@ -95,7 +95,6 @@ export function colors(darkMode: boolean): Colors {
     // blue5: darkMode ? '#153d6f70' : '#EBF4FF',
 
     // BentoBox/Kashi
-    extraHighEmphesisText: '#e3e3e3',
     lowEmphesisText: '#575757',
     mediumEmphesisText: '#7f7f7f',
     highEmphesisText: '#bfbfbf',
@@ -167,7 +166,7 @@ export const TYPE = {
     return <TextWrapper fontWeight={400} fontSize={16} color={'text1'} {...props} />
   },
   extraLargeHeader(props: TextProps) {
-    return <TextWrapper fontWeight={600} fontSize={36} {...props} />
+    return <TextWrapper fontWeight={600} fontSize={30} {...props} />
   },
   largeHeader(props: TextProps) {
     return <TextWrapper fontWeight={600} fontSize={24} {...props} />
@@ -215,7 +214,7 @@ input, textarea {
     font-family: "DM Sans", sans-serif;
   }
   input, textarea {
-    // font-family: 'Inter var', sans-serif;
+    font-family: 'Inter var', sans-serif;
   }
 }
 

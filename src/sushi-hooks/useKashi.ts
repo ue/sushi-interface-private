@@ -23,7 +23,7 @@ import { BASE_SWAPPER } from '../constants'
 import BASE_SWAPPER_ABI from '../constants/sushiAbis/swapper.json'
 import { ChainId } from '@sushiswap/sdk'
 import { getSigner } from '../utils'
-import { useKashiPairs } from 'kashi/context'
+import { useKashiPairs } from 'context/kashi'
 
 // Functions that need accrue to be called
 const ACTION_ADD_ASSET = 1
@@ -258,7 +258,7 @@ const useKashi = () => {
   // Type: Asset
   // Action: Remove
   const removeAsset = useCallback(
-    async (pairAddress: string, address: string, amount: BalanceProps, max = false) => {
+    async (pairAddress: string, address: string, amount: BalanceProps, max: boolean) => {
       const tokenAddress = isAddressString(address)
       const pairAddressCheckSum = isAddressString(pairAddress)
       const kashiPairCloneContract = getContract(pairAddressCheckSum, KASHIPAIR_ABI, library!, account!)
@@ -305,7 +305,7 @@ const useKashi = () => {
   // Type: Asset
   // Action: Remove, Withdraw
   const removeWithdrawAsset = useCallback(
-    async (pairAddress: string, address: string, amount: BalanceProps, max = false) => {
+    async (pairAddress: string, address: string, amount: BalanceProps, max: boolean) => {
       const tokenAddress = isAddressString(address)
       const pairAddressCheckSum = isAddressString(pairAddress)
       const kashiPairCloneContract = getContract(pairAddressCheckSum, KASHIPAIR_ABI, library!, account!)
@@ -421,7 +421,7 @@ const useKashi = () => {
   // Type: Collateral
   // Action: Remove, Withdraw
   const removeWithdrawCollateral = useCallback(
-    async (pairAddress: string, address: string, amount: BalanceProps, max = false) => {
+    async (pairAddress: string, address: string, amount: BalanceProps, max: boolean) => {
       const tokenAddress = isAddressString(address)
 
       const pairAddressCheckSum = isAddressString(pairAddress)
@@ -463,7 +463,7 @@ const useKashi = () => {
   // Type: Collateral
   // Action: Remove
   const removeCollateral = useCallback(
-    async (pairAddress: string, address: string, amount: BalanceProps, max = false) => {
+    async (pairAddress: string, address: string, amount: BalanceProps, max: boolean) => {
       const tokenAddress = isAddressString(address)
 
       const pairAddressCheckSum = isAddressString(pairAddress)
@@ -498,7 +498,7 @@ const useKashi = () => {
   // Type: Asset
   // Action: Borrow
   const borrow = useCallback(
-    async (pairAddress: string, address: string, amount: BalanceProps, max = false) => {
+    async (pairAddress: string, address: string, amount: BalanceProps, max: boolean) => {
       const pairAddressCheckSum = isAddressString(pairAddress)
       const kashiPairCloneContract = getContract(pairAddressCheckSum, KASHIPAIR_ABI, library!, account!)
 
@@ -530,7 +530,7 @@ const useKashi = () => {
   // Type: Asset
   // Actions: Borrow, Withdraw
   const borrowWithdraw = useCallback(
-    async (pairAddress: string, address: string, amount: BalanceProps, max = false) => {
+    async (pairAddress: string, address: string, amount: BalanceProps, max: boolean) => {
       const tokenAddress = isAddressString(address)
 
       const pairAddressCheckSum = isAddressString(pairAddress)
@@ -570,7 +570,7 @@ const useKashi = () => {
   // Type: Asset
   // Actions: Repay
   const repayFromBento = useCallback(
-    async (pairAddress: string, address: string, amount: BalanceProps, max = false) => {
+    async (pairAddress: string, address: string, amount: BalanceProps, max: boolean) => {
       // TODO: if amount ends up being 0, we need to prevent the tx from happening and display message
       const pairAddressCheckSum = isAddressString(pairAddress)
       const kashiPairCloneContract = getContract(pairAddressCheckSum, KASHIPAIR_ABI, library!, account!)
@@ -609,7 +609,7 @@ const useKashi = () => {
   // Type: Asset
   // Actions: Deposit, Repay
   const repay = useCallback(
-    async (pairAddress: string, address: string, amount: BalanceProps, max = false) => {
+    async (pairAddress: string, address: string, amount: BalanceProps, max: boolean) => {
       const tokenAddress = isAddressString(address)
       const pairAddressCheckSum = isAddressString(pairAddress)
       const kashiPairCloneContract = getContract(pairAddressCheckSum, KASHIPAIR_ABI, library!, account!)

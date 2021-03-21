@@ -2,24 +2,12 @@ import { useActiveWeb3React } from 'hooks'
 import useIntervalTransaction from 'hooks/useIntervalTransaction'
 import React, { createContext, useContext, useReducer, useCallback } from 'react'
 import { useKashiPairHelperContract } from 'sushi-hooks/useContract'
-import { BigNumber } from '@ethersproject/bignumber'
+import { BigNumber, BigNumberish } from '@ethersproject/bignumber'
 import Fraction from '../constants/Fraction'
 import sushiData from '@sushiswap/sushi-data'
 import getOracleName from '../sushi-hooks/queries/getOracleNames'
 import getMainnetAddress from '../sushi-hooks/queries/getMainnetAddress'
 import { ethers } from 'ethers'
-import {
-  MINIMUM_TARGET_UTILIZATION,
-  MAXIMUM_TARGET_UTILIZATION,
-  UTILIZATION_PRECISION,
-  FULL_UTILIZATION,
-  FULL_UTILIZATION_MINUS_MAX,
-  STARTING_INTEREST_PER_YEAR,
-  MINIMUM_INTEREST_PER_YEAR,
-  MAXIMUM_INTEREST_PER_YEAR,
-  INTEREST_ELASTICITY,
-  FACTOR_PRECISION
-} from './constants'
 
 enum ActionType {
   SET = 'SET',
@@ -29,14 +17,6 @@ enum ActionType {
 interface Reducer {
   type: ActionType
   payload: any
-}
-
-function takeFee(amount: BigNumber) {
-  return amount.mul(BigNumber.from(9)).div(BigNumber.from(10))
-}
-
-function addBorrowFee(amount: BigNumber) {
-  return amount.mul(BigNumber.from(10005)).div(BigNumber.from(10000))
 }
 
 // TODO: typing for data structure...
@@ -106,20 +86,51 @@ const reducer: React.Reducer<State, Reducer> = (state, action) => {
 }
 
 const pairAddresses = [
-  '0x2E082FBe03d87EFf58cC58b35b89b2539c9d868a',
-  '0xDb947db159587A8297c19786130db7C312e7e158',
-  '0x7f90326CcbE06c7BF462f929A20b0e3300F231D3',
-  '0x8A227eA25804c0f3b312C4a2C6220ECc06be93aF',
-  '0x022244f0763c43e547cA130D86C9e3546851Aa7A',
-  '0x7Dcc8e2524f8Ee85F7ec9F1589750D7e0673c799',
-  '0xC897c111FAC56B6342ce2394120A47E6568C1029',
-  '0x8BC61EEc07e9F7C93B6B35D46F36473323A48b49',
-  '0xFcBFB3236e7777ace26e50cD6EFDCe810Bd1ae42',
-  '0x78E05BD767418FD8F7D78E6668fA139a887d5575',
-  '0xdEFC98C1F8544F65b7541325eA7f66aA66F2Eb52',
-  '0xe2a53cD419a9CB673e89b53f467559af12395f4F',
-  '0x19F855526eb5Bc7C90690f88aF98bC870edEbcCc'
+  '0x5a0625c24Ddd563e758958f189FC9e52ABaa9023',
+  '0xa78DCeb43f1F0683b2e00EFB8C7Ae1a7F741b7d4',
+  '0xA8EC1b99d7c86177cb1C96E6F932741D57E36672',
+  '0x132DE32FD54734123F041AA934eFD10F1C827848'
 ]
+
+const MINIMUM_TARGET_UTILIZATION = BigNumber.from('700000000000000000') // 70%
+
+const MAXIMUM_TARGET_UTILIZATION = BigNumber.from('800000000000000000') // 80%
+
+const UTILIZATION_PRECISION = BigNumber.from('1000000000000000000')
+
+const FULL_UTILIZATION = BigNumber.from('1000000000000000000')
+
+const FULL_UTILIZATION_MINUS_MAX = FULL_UTILIZATION.sub(MAXIMUM_TARGET_UTILIZATION)
+
+const STARTING_INTEREST_PER_YEAR = BigNumber.from(68493150675)
+  .mul(BigNumber.from(60))
+  .mul(BigNumber.from(60))
+  .mul(BigNumber.from(24))
+  .mul(BigNumber.from(365)) // approx 1% APR
+
+const MINIMUM_INTEREST_PER_YEAR = BigNumber.from(17123287665)
+  .mul(BigNumber.from(60))
+  .mul(BigNumber.from(60))
+  .mul(BigNumber.from(24))
+  .mul(BigNumber.from(365)) // approx 0.25% APR
+
+const MAXIMUM_INTEREST_PER_YEAR = BigNumber.from(68493150675000)
+  .mul(BigNumber.from(60))
+  .mul(BigNumber.from(60))
+  .mul(BigNumber.from(24))
+  .mul(BigNumber.from(365)) // approx 1000% APR
+
+const INTEREST_ELASTICITY = BigNumber.from('28800000000000000000000000000000000000000') // Half or double in 28800 seconds (8 hours) if linear
+
+const FACTOR_PRECISION = BigNumber.from('1000000000000000000')
+
+function takeFee(amount: BigNumber) {
+  return amount.mul(BigNumber.from(9)).div(BigNumber.from(10))
+}
+
+function addBorrowFee(amount: BigNumber) {
+  return amount.mul(BigNumber.from(10005)).div(BigNumber.from(10000))
+}
 
 export function KashiProvider({ children }: { children: JSX.Element }) {
   const [state, dispatch] = useReducer<React.Reducer<State, Reducer>>(reducer, initialState)
@@ -153,8 +164,8 @@ export function KashiProvider({ children }: { children: JSX.Element }) {
     const exchangeEthPrice = await sushiData.exchange.ethPrice()
     const collateralUSD = collateralSushiData?.derivedETH * exchangeEthPrice
     const assetUSD = assetSushiData?.derivedETH * exchangeEthPrice
-    // console.log('collateralUSD:', collateralUSD)
-    // console.log('assetUSD:', assetUSD)
+    console.log('collateralUSD:', collateralUSD)
+    console.log('assetUSD:', assetUSD)
 
     const pairs = pairAddresses.map((address, i) => {
       function accrue(amount: BigNumber) {
