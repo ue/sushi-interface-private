@@ -136,11 +136,13 @@ export default function App() {
                 )} */}
                 {chainId === ChainId.ROPSTEN && <Route exact strict path="/bento" component={Bento} />}
                 {chainId === ChainId.ROPSTEN && <Route exact strict path="/bento/kashi" component={Kashi} />}
+                {chainId === ChainId.ROPSTEN && <Route exact strict path="/bento/kashi/supply" component={Kashi} />}
+                {chainId === ChainId.ROPSTEN && <Route exact strict path="/bento/kashi/borrow" component={Kashi} />}
                 {chainId === ChainId.ROPSTEN && (
                   <Route exact strict path="/bento/kashi/positions" component={KashiPositions} />
                 )}
                 {chainId === ChainId.ROPSTEN && (
-                  <Route exact strict path="/bento/kashi/:pairAddress" component={KashiPair} />
+                  <Route exact strict path="/bento/kashi/pair/:pairAddress" component={KashiPair} />
                 )}
                 {chainId === ChainId.ROPSTEN && <Route exact strict path="/bento/balances" component={BentoBalances} />}
                 <WithPadding>

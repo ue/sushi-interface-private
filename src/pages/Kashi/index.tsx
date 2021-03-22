@@ -105,7 +105,7 @@ export default function KashiPairs() {
                     pairs.map(pair => {
                       return (
                         <div key={pair.address}>
-                          <Link to={'/bento/kashi/' + String(pair.address).toLowerCase()} className="block">
+                          <Link to={'/bento/kashi/pair/' + String(pair.address).toLowerCase()} className="block">
                             <div
                               className="py-4 px-4 items-center align-center grid grid-cols-5 md:grid-cols-6 text-sm font-semibold"
                               style={{ background: '#19212e', borderRadius: '12px' }}
