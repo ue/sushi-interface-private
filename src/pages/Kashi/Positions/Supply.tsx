@@ -45,7 +45,7 @@ const SupplyPositions = ({ supplyPositions }: any) => {
             </div>
           </div>
         )}
-        <FixedScrollable>
+        <FixedScrollable height="22rem">
           <>
             {supplyPositions &&
               supplyPositions.length > 0 &&

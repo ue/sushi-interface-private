@@ -21,7 +21,7 @@ import { formattedNum } from 'utils'
 import { theme } from 'theme'
 
 import ResponsiveGrid, { Secondary, Primary } from '../components/ResponsiveGrid'
-import { InfoCard } from '../components'
+import { FixedScrollable, InfoCard } from '../components'
 import DepositGraphic from '../../../assets/kashi/deposit-graphic.png'
 
 //import Charts from './Charts'
@@ -205,33 +205,35 @@ export default function KashiPair({
                   >
                     <Tabs tabs={tabs} selected={section} setSelected={setSection} />
                   </div>
-                  <div
-                    className="py-4 px-6"
-                    style={{
-                      borderBottom: '2px solid rgba(0, 0, 0, 0.1)'
-                    }}
-                  >
-                    {pair && section === 'supply' && (
-                      <Supply
-                        tokenAddress={pair.asset.address}
-                        tokenSymbol={pair.asset.symbol}
-                        pairAddress={pairAddress}
-                      />
-                    )}
-                    {pair && section === 'borrow' && (
-                      <Borrow
-                        collateral={pair.collateral}
-                        asset={pair.asset}
-                        pairAddress={pairAddress}
-                        //healthPercentage={pair.user.health.percentage}
-                        //collateralUSD={pair.user.collateral.usdString}
-                        //borrowUSD={pair.user.borrow.usdString}
-                        //maxRemove={pair.user.collateral.max}
-                        //maxBorrow={pair.user.borrow.max}
-                      />
-                    )}
-                    {/* {pair && section === 'leverage' && <Leverage />} */}
-                  </div>
+                  <FixedScrollable height="26rem">
+                    <div
+                      className="py-4 px-6"
+                      // style={{
+                      //   borderBottom: '2px solid rgba(0, 0, 0, 0.1)'
+                      // }}
+                    >
+                      {pair && section === 'supply' && (
+                        <Supply
+                          tokenAddress={pair.asset.address}
+                          tokenSymbol={pair.asset.symbol}
+                          pairAddress={pairAddress}
+                        />
+                      )}
+                      {pair && section === 'borrow' && (
+                        <Borrow
+                          collateral={pair.collateral}
+                          asset={pair.asset}
+                          pairAddress={pairAddress}
+                          //healthPercentage={pair.user.health.percentage}
+                          //collateralUSD={pair.user.collateral.usdString}
+                          //borrowUSD={pair.user.borrow.usdString}
+                          //maxRemove={pair.user.collateral.max}
+                          //maxBorrow={pair.user.borrow.max}
+                        />
+                      )}
+                      {/* {pair && section === 'leverage' && <Leverage />} */}
+                    </div>
+                  </FixedScrollable>
                 </StyledBaseCard>
               </div>
             </div>
@@ -239,7 +241,7 @@ export default function KashiPair({
         </ResponsiveGrid>
       </PageWrapper>
 
-      <div>
+      <div className="w-full px-2 py-4">
         <Debugger data={pair} />
       </div>
     </>

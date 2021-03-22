@@ -34,7 +34,7 @@ export default function Supply({ tokenAddress, tokenSymbol, pairAddress }: Suppl
     <>
       <WrapperNoPadding id="stake-page">
         <AutoColumn gap="sm">
-          <div className="px-2 grid grid-cols-3 gap-2">
+          <div className="px-2 py-4 grid grid-cols-3 gap-2">
             <div className="col-span-1 items-start">
               <div className="flex">
                 <div className="text-xs sm:text-sm text-gray-300">Supply APR</div>
