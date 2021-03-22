@@ -19,6 +19,11 @@ import BentoBoxLogo from 'assets/kashi/bento-symbol.svg'
 import { Debugger } from 'components/Debugger'
 import { formattedNum } from 'utils'
 import { theme } from 'theme'
+
+import ResponsiveGrid, { Secondary, Primary } from '../components/ResponsiveGrid'
+import { InfoCard } from '../components'
+import DepositGraphic from '../../../assets/kashi/deposit-graphic.png'
+
 //import Charts from './Charts'
 
 const StyledArrowLeft = styled(ArrowLeft)`
@@ -26,8 +31,9 @@ const StyledArrowLeft = styled(ArrowLeft)`
 `
 
 const PageWrapper = styled(AutoColumn)`
-  max-width: 480px; /* 480px */
+  max-width: 1200px; /* 480px */
   width: 100%;
+  margin: 0 auto;
 `
 
 const StyledBaseCard = styled(BaseCard)`
@@ -77,143 +83,162 @@ export default function KashiPair({
   return (
     <>
       <PageWrapper>
-        <div className="flex-col space-y-8">
-          <div>
-            <div className="block flex justify-between items-center">
-              {/* <StyledArrowLeft /> */}
-              <div></div>
-              <nav className="-mb-px flex space-x-4 px-4">
-                <Link to="/bento/kashi" className="border-transparent py-2 px-1 border-b-2">
-                  <div className="flex items-center text-gray-500 hover:text-gray-400 font-medium">
-                    <div className="whitespace-nowrap text-base mr-2">Markets</div>
-                    <BarChart size={16} />
-                  </div>
-                </Link>
-                <Link to="/bento/kashi/positions" className="border-transparent py-2 px-1 border-b-2">
-                  <div className="flex items-center text-gray-500 hover:text-gray-400 font-medium">
-                    <div className="whitespace-nowrap text-base mr-2">Positions</div>
-                    <User size={16} />
-                  </div>
-                </Link>
-                <Link to="/bento/balances" className="border-transparent py-2 px-1 border-b-2">
-                  <div className="flex items-center text-gray-500 hover:text-gray-400 font-medium">
-                    <div className="whitespace-nowrap text-base mr-2">My Bento</div>
-                    <img src={BentoBoxLogo} className="w-6" />
-                  </div>
-                </Link>
-              </nav>
-            </div>
-            <StyledBaseCard padding={'0px'}>
-              {/* Header */}
-              <div
-                className="py-4 px-6"
-                style={{
-                  //borderRight: '2px solid rgba(0, 0, 0, 0.1)',
-                  borderBottom: '2px solid rgba(0, 0, 0, 0.1)'
-                }}
-              >
-                <div className="grid grid-cols-3 gap-2 items-center">
-                  <div className="flex space-x-2 mr-4">
-                    <a
-                      href={
-                        `${
-                          chainId === ChainId.MAINNET
-                            ? 'https://www.etherscan.io/address/'
-                            : chainId === ChainId.ROPSTEN
-                            ? 'https://ropsten.etherscan.io/address/'
-                            : null
-                        }` + pair?.collateral.address
-                      }
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      <img
-                        src={pair && getTokenIcon(pair?.collateral.address)}
-                        className="w-10 y-10 sm:w-12 sm:y-12 rounded-lg"
-                      />
-                    </a>
-                    <a
-                      href={
-                        `${
-                          chainId === ChainId.MAINNET
-                            ? 'https://www.etherscan.io/address/'
-                            : chainId === ChainId.ROPSTEN
-                            ? 'https://ropsten.etherscan.io/address/'
-                            : null
-                        }` + pair?.asset.address
-                      }
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      <img
-                        src={pair && getTokenIcon(pair?.asset.address)}
-                        className="w-10 y-10 sm:w-12 sm:y-12 rounded-lg"
-                      />
-                    </a>
-                  </div>
-                  <div className="col-span-2 flex justify-between items-center w-full">
-                    <div>
-                      <div className="text-base sm:text-2xl font-bold">
-                        {pair && `${pair.collateral.symbol + '/' + pair.asset.symbol}`}
+        <ResponsiveGrid>
+          <Secondary marginTop={10}>
+            <InfoCard
+              backgroundImage={DepositGraphic}
+              title={'Deposit tokens into BentoBox for all the yields.'}
+              description={
+                'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+              }
+            />
+          </Secondary>
+          <Primary>
+            <div className="flex-col space-y-8" style={{ maxWidth: '600px' }}>
+              <div>
+                <div className="block flex justify-between items-center">
+                  {/* <StyledArrowLeft /> */}
+                  <div></div>
+                  <nav className="-mb-px flex space-x-4 px-4">
+                    <Link to="/bento/kashi" className="border-transparent py-2 px-1 border-b-2">
+                      <div className="flex items-center text-gray-500 hover:text-gray-400 font-medium">
+                        <div className="whitespace-nowrap text-base mr-2">Markets</div>
+                        <BarChart size={16} />
                       </div>
-                      <div className="text-sm text-gray-400">{pair && `${pair.oracle.name}`}</div>
-                    </div>
-                    <div className="items-baseline text-right">
-                      <div className="text-base text-gray-400">Net Worth</div>
-                      <div
-                        className="text-sm text-gray-400"
-                        style={{
-                          color: `${pair.user.pairNetWorth.usdString > 0 ? theme.primaryBlue : theme.primaryPink}`
-                        }}
-                      >
-                        ≈ {formattedNum(pair.user.pairNetWorth.usdString, true)}
+                    </Link>
+                    <Link to="/bento/kashi/positions" className="border-transparent py-2 px-1 border-b-2">
+                      <div className="flex items-center text-gray-500 hover:text-gray-400 font-medium">
+                        <div className="whitespace-nowrap text-base mr-2">Positions</div>
+                        <User size={16} />
                       </div>
-                    </div>
-                  </div>
-                  {/* <div className="hidden sm:block">
+                    </Link>
+                    <Link to="/bento/balances" className="border-transparent py-2 px-1 border-b-2">
+                      <div className="flex items-center text-gray-500 hover:text-gray-400 font-medium">
+                        <div className="whitespace-nowrap text-base mr-2">My Bento</div>
+                        <img src={BentoBoxLogo} className="w-6" />
+                      </div>
+                    </Link>
+                  </nav>
+                </div>
+                <StyledBaseCard padding={'0px'}>
+                  {/* Header */}
+                  <div
+                    className="py-4 px-6"
+                    style={{
+                      //borderRight: '2px solid rgba(0, 0, 0, 0.1)',
+                      borderBottom: '2px solid rgba(0, 0, 0, 0.1)',
+                      background: theme.mediumDarkPurple
+                    }}
+                  >
+                    <div className="grid grid-cols-3 gap-2 items-center">
+                      <div className="flex space-x-2 mr-4">
+                        <a
+                          href={
+                            `${
+                              chainId === ChainId.MAINNET
+                                ? 'https://www.etherscan.io/address/'
+                                : chainId === ChainId.ROPSTEN
+                                ? 'https://ropsten.etherscan.io/address/'
+                                : null
+                            }` + pair?.collateral.address
+                          }
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          <img
+                            src={pair && getTokenIcon(pair?.collateral.address)}
+                            className="w-10 y-10 sm:w-12 sm:y-12 rounded-lg"
+                          />
+                        </a>
+                        <a
+                          href={
+                            `${
+                              chainId === ChainId.MAINNET
+                                ? 'https://www.etherscan.io/address/'
+                                : chainId === ChainId.ROPSTEN
+                                ? 'https://ropsten.etherscan.io/address/'
+                                : null
+                            }` + pair?.asset.address
+                          }
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          <img
+                            src={pair && getTokenIcon(pair?.asset.address)}
+                            className="w-10 y-10 sm:w-12 sm:y-12 rounded-lg"
+                          />
+                        </a>
+                      </div>
+                      <div className="col-span-2 flex justify-between items-center w-full">
+                        <div>
+                          <div className="text-base sm:text-2xl font-bold">
+                            {pair && `${pair.collateral.symbol + '/' + pair.asset.symbol}`}
+                          </div>
+                          <div className="text-sm text-gray-400">{pair && `${pair.oracle.name}`}</div>
+                        </div>
+                        <div className="items-baseline text-right">
+                          <div className="text-base text-gray-400">Net Worth</div>
+                          <div
+                            className="text-sm text-gray-400"
+                            style={{
+                              color: `${pair.user.pairNetWorth.usdString > 0 ? theme.primaryBlue : theme.primaryPink}`
+                            }}
+                          >
+                            ≈ {formattedNum(pair.user.pairNetWorth.usdString, true)}
+                          </div>
+                        </div>
+                      </div>
+                      {/* <div className="hidden sm:block">
                     <div>
                       <div className="text-base sm:text-lg font-bold">{pair && 'Chainlink'}</div>
                       <div className="text-xs sm:text-base font-semibold text-gray-400">Oracle ↗</div>
                     </div>
                   </div> */}
-                </div>
+                    </div>
+                  </div>
+                  {/* Tabs */}
+                  <div
+                    className="py-2 px-6"
+                    style={{
+                      borderBottom: '2px solid rgba(0, 0, 0, 0.1)'
+                    }}
+                  >
+                    <Tabs tabs={tabs} selected={section} setSelected={setSection} />
+                  </div>
+                  <div
+                    className="py-4 px-6"
+                    style={{
+                      borderBottom: '2px solid rgba(0, 0, 0, 0.1)'
+                    }}
+                  >
+                    {pair && section === 'supply' && (
+                      <Supply
+                        tokenAddress={pair.asset.address}
+                        tokenSymbol={pair.asset.symbol}
+                        pairAddress={pairAddress}
+                      />
+                    )}
+                    {pair && section === 'borrow' && (
+                      <Borrow
+                        collateral={pair.collateral}
+                        asset={pair.asset}
+                        pairAddress={pairAddress}
+                        //healthPercentage={pair.user.health.percentage}
+                        //collateralUSD={pair.user.collateral.usdString}
+                        //borrowUSD={pair.user.borrow.usdString}
+                        //maxRemove={pair.user.collateral.max}
+                        //maxBorrow={pair.user.borrow.max}
+                      />
+                    )}
+                    {/* {pair && section === 'leverage' && <Leverage />} */}
+                  </div>
+                </StyledBaseCard>
               </div>
-              {/* Tabs */}
-              <div
-                className="py-2 px-6"
-                style={{
-                  borderBottom: '2px solid rgba(0, 0, 0, 0.1)'
-                }}
-              >
-                <Tabs tabs={tabs} selected={section} setSelected={setSection} />
-              </div>
-              <div
-                className="py-4 px-6"
-                style={{
-                  borderBottom: '2px solid rgba(0, 0, 0, 0.1)'
-                }}
-              >
-                {pair && section === 'supply' && (
-                  <Supply tokenAddress={pair.asset.address} tokenSymbol={pair.asset.symbol} pairAddress={pairAddress} />
-                )}
-                {pair && section === 'borrow' && (
-                  <Borrow
-                    collateral={pair.collateral}
-                    asset={pair.asset}
-                    pairAddress={pairAddress}
-                    //healthPercentage={pair.user.health.percentage}
-                    //collateralUSD={pair.user.collateral.usdString}
-                    //borrowUSD={pair.user.borrow.usdString}
-                    //maxRemove={pair.user.collateral.max}
-                    //maxBorrow={pair.user.borrow.max}
-                  />
-                )}
-                {/* {pair && section === 'leverage' && <Leverage />} */}
-              </div>
-            </StyledBaseCard>
-          </div>
-        </div>
+            </div>
+          </Primary>
+        </ResponsiveGrid>
       </PageWrapper>
+
       <div>
         <Debugger data={pair} />
       </div>
