@@ -23,7 +23,7 @@ import { formatFromBalance, formattedNum } from '../../utils'
 import { Search, PlusSquare, MinusSquare, ChevronLeft } from 'react-feather'
 
 import ReponsiveGrid, { Secondary, Primary } from '../Kashi/components/ResponsiveGrid'
-import { InfoCard } from '../Kashi/components'
+import { InfoCard, FixedScrollable } from '../Kashi/components'
 
 import getTokenIcon from '../../sushi-hooks/queries/getTokenIcons'
 import BentoBoxLogo from '../../assets/kashi/bento-symbol.svg'
@@ -132,7 +132,7 @@ export default function BentoBalances() {
                         ≈ {formattedNum(totalDepositsUSD, true)}
                       </div>
                     </div>
-                    <div className="overflow-y-scroll" style={{ height: '28rem' }}>
+                    <FixedScrollable>
                       {balances &&
                         balances.map((balance: any, i: number) => {
                           // todo: remove increment for testing purposes
@@ -144,7 +144,7 @@ export default function BentoBalances() {
                             />
                           )
                         })}
-                    </div>
+                    </FixedScrollable>
                   </div>
                 </StyledBaseCard>
               </AutoColumn>

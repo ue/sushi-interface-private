@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import styled, { ThemeContext } from 'styled-components'
 import { transparentize } from 'polished'
 import { BaseCard } from '../../../components/Card'
-
+import { FixedScrollable } from '../components'
 import getTokenIcon from '../../../sushi-hooks/queries/getTokenIcons'
 import { formattedPercent, formattedNum } from '../../../utils'
 
@@ -12,6 +12,7 @@ const StyledBaseCard = styled(BaseCard)`
   background: ${({ theme }) => transparentize(0.6, theme.bg1)};
   position: relative;
   overflow: hidden;
+  border-radius: 0 0 12px 12px;
 `
 
 // TODO: Use table component
@@ -44,7 +45,7 @@ const SupplyPositions = ({ supplyPositions }: any) => {
             </div>
           </div>
         )}
-        <div className="flex-col space-y-2">
+        <FixedScrollable>
           <>
             {supplyPositions &&
               supplyPositions.length > 0 &&
@@ -53,7 +54,7 @@ const SupplyPositions = ({ supplyPositions }: any) => {
                   <>
                     <Link to={'/bento/kashi/pair/' + pair.address} className="block" key={pair.address}>
                       <div
-                        className="py-4 px-4 items-center align-center grid grid-cols-4 sm:grid-cols-4 text-sm font-semibold"
+                        className="mb-2 py-4 px-4 items-center align-center grid grid-cols-4 sm:grid-cols-4 text-sm font-semibold"
                         style={{ background: '#19212e', borderRadius: '12px' }}
                       >
                         <div className="flex space-x-2 col-span-2 sm:col-span-1">
@@ -85,7 +86,7 @@ const SupplyPositions = ({ supplyPositions }: any) => {
                 )
               })}
           </>
-        </div>
+        </FixedScrollable>
       </StyledBaseCard>
     </>
   )

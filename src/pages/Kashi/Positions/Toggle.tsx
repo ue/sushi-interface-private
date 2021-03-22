@@ -16,17 +16,18 @@ export default function PositionsToggle({ selected, setSelected }: PositionsTogg
   return (
     <div>
       {/* Desktop Styles */}
-      <div className="hidden w-full px-4 md:flex items-center md:justify-end">
+      <div className="hidden w-full px-4 md:flex items-center md:justify-between">
         <div className="py-3 md:py-0 flex items-center space-x-2 mr-4">
           <div
             className="px-2 py-1 font-semibold rounded"
-            style={{ background: transparentize(0.6, theme.bg1), color: `${theme.primaryBlue}` }}
+            style={{ background: theme.baseCard, color: `${theme.primaryBlue}` }}
           >
             {counts.pairsSupplied}
           </div>
           <button
             className={
-              selected === 'supply' ? 'text-white cursor-pointer' : 'text-gray-500 hover:text-gray-400 cursor-pointer'
+              (selected === 'supply' ? 'text-white' : 'text-gray-500 hover:text-gray-400') +
+              ' cursor-pointer focus:outline-none'
             }
             onClick={() => setSelected('supply')}
           >
@@ -36,13 +37,14 @@ export default function PositionsToggle({ selected, setSelected }: PositionsTogg
         <div className="flex items-center space-x-2">
           <div
             className="px-2 py-1 font-semibold rounded"
-            style={{ background: transparentize(0.6, theme.bg1), color: `${theme.primaryPink}` }}
+            style={{ background: theme.baseCard, color: `${theme.primaryPink}` }}
           >
             {counts.pairsBorrowed}
           </div>
           <button
             className={
-              selected === 'borrow' ? 'text-white cursor-pointer' : 'text-gray-500 hover:text-gray-400 cursor-pointer'
+              (selected === 'borrow' ? 'text-white' : 'text-gray-500 hover:text-gray-400') +
+              ' cursor-pointer focus:outline-none'
             }
             onClick={() => setSelected('borrow')}
           >
@@ -54,7 +56,7 @@ export default function PositionsToggle({ selected, setSelected }: PositionsTogg
       <div className="md:hidden w-full grid grid-cols-2 gap-4">
         <button
           className="px-4 py-3 md:py-0 flex justify-between items-center space-x-2 rounded-lg"
-          style={{ background: `${selected === 'supply' ? transparentize(0.6, theme.bg1) : ''}` }}
+          style={{ background: `${selected === 'supply' ? theme.baseCard : ''}` }}
           onClick={() => setSelected('supply')}
         >
           <div className="px-3 py-1 font-semibold rounded text-white" style={{ background: `${theme.primaryBlue}` }}>
@@ -71,7 +73,7 @@ export default function PositionsToggle({ selected, setSelected }: PositionsTogg
         </button>
         <button
           className="px-4 py-3 sm:py-0 flex justify-between items-center space-x-2 rounded-lg"
-          style={{ background: `${selected === 'borrow' ? transparentize(0.6, theme.bg1) : ''}` }}
+          style={{ background: `${selected === 'borrow' ? theme.baseCard : ''}` }}
           onClick={() => setSelected('borrow')}
         >
           <div className="px-3 py-1 font-semibold rounded text-white" style={{ background: `${theme.primaryPink}` }}>

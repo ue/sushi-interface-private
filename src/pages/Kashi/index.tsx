@@ -8,10 +8,9 @@ import QuestionHelper from '../../components/QuestionHelper'
 import getTokenIcon from '../../sushi-hooks/queries/getTokenIcons'
 import { formattedPercent } from '../../utils'
 import { useKashiPairs } from '../../context/kashi'
-import { AutoColumn } from '../../components/Column'
 
 import ResponsiveGrid, { Secondary, Primary } from '../Kashi/components/ResponsiveGrid'
-import { SplitPane, Navigation, Search, Stats, MarketsNavigation, InfoCard } from './components'
+import { InfoCard, SectionHeader } from './components'
 
 import DepositGraphic from '../../assets/kashi/deposit-graphic.png'
 
@@ -47,46 +46,9 @@ export default function KashiPairs() {
           />
         </Secondary>
         <Primary>
-          <div className="hidden md:block">
-            <SplitPane left={<MarketsNavigation />} right={<Navigation />} />
-          </div>
-          <div className="block md:hidden">
-            <SplitPane left={<div></div>} right={<Navigation />} />
-          </div>
           <div className="flex-col space-y-8">
             <div>
-              <AutoColumn
-                gap="md"
-                style={{
-                  width: '100%',
-                  paddingTop: '1rem',
-                  paddingBottom: '1rem',
-                  background: `${theme.mediumDarkPurple}`,
-                  borderRadius: '12px 12px 0 0'
-                }}
-              >
-                <div className="px-6 pb-2 md:px-2 md:pb-4 flex md:hidden justify-between">
-                  <div className="float-right items-center w-full">
-                    <div className="flex justify-between items-center w-full">
-                      <div className="font-semibold pb-2">All Kashi Markets</div>
-                      <MarketsNavigation />
-                    </div>
-                    <Search />
-                  </div>
-                </div>
-                <div className="flex justify-between items-center">
-                  <div className="hidden md:flex ml-4 items-center md:w-2/5">
-                    <div className="w-full">
-                      <div className="font-semibold text-lg px-4 pb-4">All Kashi Markets</div>
-                      <Search />
-                    </div>
-                  </div>
-                  <div className="px-4 w-full md:w-3/5">
-                    <Stats />
-                  </div>
-                </div>
-              </AutoColumn>
-
+              <SectionHeader />
               {/* TODO: Use table component */}
               <StyledBaseCard cornerRadiusTopNone={true}>
                 <div className="pb-4 px-4 grid grid-flow-col grid-cols-5 md:grid-cols-6 text-sm font-semibold text-gray-500">

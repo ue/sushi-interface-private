@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import styled, { ThemeContext } from 'styled-components'
 import { transparentize } from 'polished'
 import { BaseCard } from '../../../components/Card'
-
+import { FixedScrollable } from '../components'
 import getTokenIcon from '../../../sushi-hooks/queries/getTokenIcons'
 import { formattedPercent, formattedNum } from '../../../utils'
 
@@ -12,6 +12,7 @@ const StyledBaseCard = styled(BaseCard)`
   background: ${({ theme }) => transparentize(0.6, theme.bg1)};
   position: relative;
   overflow: hidden;
+  border-radius: 0 0 12px 12px;
 `
 // TODO: Use table component
 const BorrowPositions = ({ borrowPositions }: any) => {
@@ -46,7 +47,7 @@ const BorrowPositions = ({ borrowPositions }: any) => {
           </div>
         )}
 
-        <div className="flex-col space-y-2">
+        <FixedScrollable>
           {borrowPositions &&
             borrowPositions.length > 0 &&
             borrowPositions.map((pair: any) => {
@@ -54,7 +55,7 @@ const BorrowPositions = ({ borrowPositions }: any) => {
                 <>
                   <Link to={'/bento/kashi/pair/' + pair.address + '?tab=borrow'} className="block" key={pair.address}>
                     <div
-                      className="py-4 px-4 items-center align-center grid grid-cols-3 sm:grid-cols-6 text-sm font-semibold"
+                      className="mb-2 py-4 px-4 items-center align-center grid grid-cols-3 sm:grid-cols-6 text-sm font-semibold"
                       style={{ background: '#19212e', borderRadius: '12px' }}
                     >
                       <div className="flex space-x-2 col-span-1">
@@ -105,7 +106,7 @@ const BorrowPositions = ({ borrowPositions }: any) => {
                 </>
               )
             })}
-        </div>
+        </FixedScrollable>
       </StyledBaseCard>
     </>
   )
