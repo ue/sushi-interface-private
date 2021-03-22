@@ -42,6 +42,8 @@ import BentoBalances from './BentoBalances'
 import Kashi from './Kashi'
 import KashiPair from './Kashi/Pair'
 import KashiPositions from './Kashi/Positions'
+import SupplyMarkets from './Kashi/SupplyMarkets'
+import BorrowMarkets from './Kashi/BorrowMarkets'
 
 // Additional Tools
 import Tools from './Tools'
@@ -136,8 +138,12 @@ export default function App() {
                 )} */}
                 {chainId === ChainId.ROPSTEN && <Route exact strict path="/bento" component={Bento} />}
                 {chainId === ChainId.ROPSTEN && <Route exact strict path="/bento/kashi" component={Kashi} />}
-                {chainId === ChainId.ROPSTEN && <Route exact strict path="/bento/kashi/supply" component={Kashi} />}
-                {chainId === ChainId.ROPSTEN && <Route exact strict path="/bento/kashi/borrow" component={Kashi} />}
+                {chainId === ChainId.ROPSTEN && (
+                  <Route exact strict path="/bento/kashi/supply" component={SupplyMarkets} />
+                )}
+                {chainId === ChainId.ROPSTEN && (
+                  <Route exact strict path="/bento/kashi/borrow" component={BorrowMarkets} />
+                )}
                 {chainId === ChainId.ROPSTEN && (
                   <Route exact strict path="/bento/kashi/positions" component={KashiPositions} />
                 )}
