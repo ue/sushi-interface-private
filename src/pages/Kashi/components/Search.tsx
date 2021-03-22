@@ -9,7 +9,8 @@ export default function Search() {
     <div className="relative">
       <input
         className="py-3 px-4 rounded-full w-full focus:outline-none"
-        style={{ background: `${transparentize(0.6, theme.bg1)}` }}
+        style={{ background: theme.baseCard }}
+        //style={{ background: `${transparentize(0.6, theme.bg1)}` }}
         //onChange={e => search(e.target.value)}
         //value={term}
         placeholder="Search by name, symbol, address"

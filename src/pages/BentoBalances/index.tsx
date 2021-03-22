@@ -94,21 +94,7 @@ export default function BentoBalances() {
                 }}
               >
                 <div className="px-6 pb-2 md:px-2 md:pb-4 flex md:hidden justify-between">
-                  <button
-                    onClick={() => {
-                      if (history.length < 3) {
-                        history.push('/bento')
-                      } else {
-                        history.goBack()
-                      }
-                    }}
-                    className="mr-2 p-2 rounded-full"
-                    style={{ background: theme.baseCard }}
-                  >
-                    <ChevronLeft strokeWidth={2} size={24} />
-                  </button>
                   <div className="flex float-right items-center">
-                    <img src={BentoBoxLogo} className="w-10 mr-2" />
                     <div className="font-semibold">My Bento Balances</div>
                   </div>
                 </div>

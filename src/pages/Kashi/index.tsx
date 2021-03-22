@@ -2,85 +2,151 @@ import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import styled, { ThemeContext } from 'styled-components'
 import { transparentize } from 'polished'
-import { Debugger } from 'components/Debugger'
+//import { Debugger } from 'components/Debugger'
 import { BaseCard } from '../../components/Card'
 import QuestionHelper from '../../components/QuestionHelper'
 import getTokenIcon from '../../sushi-hooks/queries/getTokenIcons'
 import { formattedPercent } from '../../utils'
-import { useKashiPairs, KashiPair } from '../../context/kashi'
+import { useKashiPairs } from '../../context/kashi'
+import { AutoColumn } from '../../components/Column'
+import { SplitPane, Navigation, Search, Stats, MarketsNavigation } from './components'
 
-import { Header, SplitPane, Navigation, Search } from './components'
+import DepositGraphic from '../../assets/kashi/deposit-graphic.png'
 
 const PageWrapper = styled.div`
-  max-width: 800px;
+  max-width: 1200px;
   width: 100%;
 `
 
-const StyledBaseCard = styled(BaseCard)`
+const StyledBaseCard = styled(BaseCard)<{ cornerRadiusTopNone: boolean }>`
   border: none
   background: ${({ theme }) => transparentize(0.6, theme.bg1)};
   position: relative;
   overflow: hidden;
+  border-radius: ${({ cornerRadiusTopNone }) => cornerRadiusTopNone && '0 0 12px 12px'};
 `
 
 export default function KashiPairs() {
+  const theme = useContext(ThemeContext)
   const pairs = useKashiPairs()
 
   if (!pairs) return null
 
   return (
     <PageWrapper>
-      <div className="flex-col space-y-8">
-        <Header />
-        <div>
-          <SplitPane left={<Navigation />} right={<Search />} />
-
-          {/* TODO: Use table component */}
-          <StyledBaseCard>
-            <div className="pb-4 px-4 grid grid-flow-col grid-cols-5 md:grid-cols-6 text-sm font-semibold text-gray-500">
-              <div className="hover:text-gray-400 col-span-2 md:col-span-1">Market</div>
-              <div className="text-right hidden md:block pl-4 hover:text-gray-400">Collateral</div>
-              <div className="text-right hidden md:block hover:text-gray-400">Asset</div>
-              <div className="flex text-right hover:text-gray-400 item-center justify-end">
-                Oracle
-                <QuestionHelper text="The onchain oracle that tracks the pricing for this pair" />
+      <div className="px-0 md:px-4 grid grid-cols-1 lg:grid-cols-4 gap-4">
+        <div className="hidden lg:block lg:col-span-1 mt-12">
+          <div
+            className="rounded-xl h-full flex-col justify-between"
+            style={{
+              backgroundColor: theme.baseCard,
+              background: `url(${DepositGraphic}), ${theme.baseCard}`,
+              backgroundRepeat: 'no-repeat',
+              backgroundSize: 'contain',
+              backgroundPosition: 'center bottom'
+            }}
+          >
+            <div className="p-8">
+              <div className="font-semibold text-2xl pb-4">Deposit tokens into BentoBox for all the yields.</div>
+              <div className="font-base text-base text-gray-400">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+                dolore magna aliqua.
               </div>
-              <div className="text-right hover:text-gray-400">Supply APY</div>
-              <div className="text-right hover:text-gray-400">Borrow APY</div>
             </div>
-            <div className="flex-col space-y-2">
-              {pairs.length > 0 &&
-                pairs.map(pair => {
-                  return (
-                    <div key={pair.address}>
-                      <Link to={'/bento/kashi/' + String(pair.address).toLowerCase()} className="block">
-                        <div
-                          className="py-4 px-4 items-center align-center grid grid-cols-5 md:grid-cols-6 text-sm font-semibold"
-                          style={{ background: '#19212e', borderRadius: '12px' }}
-                        >
-                          <div className="flex space-x-2 col-span-2 md:col-span-1">
-                            <img
-                              src={getTokenIcon(pair.collateral.address)}
-                              className="w-10 y-10 sm:w-12 sm:y-12 rounded-lg"
-                            />
-                            <img
-                              src={getTokenIcon(pair.asset.address)}
-                              className="w-10 y-10 sm:w-12 sm:y-12 rounded-lg"
-                            />
-                          </div>
-                          <div className="text-right hidden md:block pl-4">{pair.collateral.symbol}</div>
-                          <div className="text-right hidden md:block">{pair.asset.symbol}</div>
-                          <div className="text-right">{pair.oracle.name}</div>
-                          <div className="text-right">{formattedPercent(pair.details.apr.currentSupplyAPR)}</div>
-                          <div className="text-right">{formattedPercent(pair.details.apr.currentInterestPerYear)}</div>
-                        </div>
-                      </Link>
-                      <Debugger data={pair} />
+            {/* <img src={BentoBoxImage} className="w-full cover" /> */}
+          </div>
+        </div>
+        <div className="col-span-3">
+          <div className="hidden md:block">
+            <SplitPane left={<MarketsNavigation />} right={<Navigation />} />
+          </div>
+          <div className="block md:hidden">
+            <SplitPane left={<div></div>} right={<Navigation />} />
+          </div>
+          <div className="flex-col space-y-8">
+            <div>
+              <AutoColumn
+                gap="md"
+                style={{
+                  width: '100%',
+                  paddingTop: '1rem',
+                  paddingBottom: '1rem',
+                  background: `${theme.mediumDarkPurple}`,
+                  borderRadius: '12px 12px 0 0'
+                }}
+              >
+                <div className="px-6 pb-2 md:px-2 md:pb-4 flex md:hidden justify-between">
+                  <div className="float-right items-center w-full">
+                    <div className="flex justify-between items-center w-full">
+                      <div className="font-semibold pb-2">All Kashi Markets</div>
+                      <MarketsNavigation />
                     </div>
-                  )
-                })}
+                    <Search />
+                  </div>
+                </div>
+                <div className="flex justify-between items-center">
+                  <div className="hidden md:flex ml-4 items-center md:w-2/5">
+                    <div className="w-full">
+                      <div className="font-semibold text-lg px-4 pb-4">All Kashi Markets</div>
+                      <Search />
+                    </div>
+                  </div>
+                  <div className="px-4 w-full md:w-3/5">
+                    <Stats />
+                  </div>
+                </div>
+              </AutoColumn>
+
+              {/* TODO: Use table component */}
+              <StyledBaseCard cornerRadiusTopNone={true}>
+                <div className="pb-4 px-4 grid grid-flow-col grid-cols-5 md:grid-cols-6 text-sm font-semibold text-gray-500">
+                  <div className="hover:text-gray-400 col-span-2 md:col-span-1">Market</div>
+                  <div className="text-right hidden md:block pl-4 hover:text-gray-400">Collateral</div>
+                  <div className="text-right hidden md:block hover:text-gray-400">Asset</div>
+                  <div className="flex text-right hover:text-gray-400 item-center justify-end">
+                    Oracle
+                    <QuestionHelper text="The onchain oracle that tracks the pricing for this pair" />
+                  </div>
+                  <div className="text-right hover:text-gray-400">Supply APY</div>
+                  <div className="text-right hover:text-gray-400">Borrow APY</div>
+                </div>
+                <div className="flex-col space-y-2">
+                  {pairs.length > 0 &&
+                    pairs.map(pair => {
+                      return (
+                        <div key={pair.address}>
+                          <Link to={'/bento/kashi/' + String(pair.address).toLowerCase()} className="block">
+                            <div
+                              className="py-4 px-4 items-center align-center grid grid-cols-5 md:grid-cols-6 text-sm font-semibold"
+                              style={{ background: '#19212e', borderRadius: '12px' }}
+                            >
+                              <div className="flex space-x-2 col-span-2 md:col-span-1">
+                                <img
+                                  src={getTokenIcon(pair.collateral.address)}
+                                  className="w-10 y-10 sm:w-12 sm:y-12 rounded-lg"
+                                />
+                                <img
+                                  src={getTokenIcon(pair.asset.address)}
+                                  className="w-10 y-10 sm:w-12 sm:y-12 rounded-lg"
+                                />
+                              </div>
+                              <div className="text-right hidden md:block pl-4">{pair.collateral.symbol}</div>
+                              <div className="text-right hidden md:block">{pair.asset.symbol}</div>
+                              <div className="text-right">{pair.oracle.name}</div>
+                              <div className="text-right">{formattedPercent(pair.details.apr.currentSupplyAPR)}</div>
+                              <div className="text-right">
+                                {formattedPercent(pair.details.apr.currentInterestPerYear)}
+                              </div>
+                            </div>
+                          </Link>
+                          {/* <Debugger data={pair} /> */}
+                        </div>
+                      )
+                    })}
+                </div>
+              </StyledBaseCard>
             </div>
-          </StyledBaseCard>
+          </div>
         </div>
       </div>
     </PageWrapper>
