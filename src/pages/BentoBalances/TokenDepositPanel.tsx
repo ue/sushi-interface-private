@@ -247,7 +247,7 @@ export default function CurrencyInputPanel({
           }}
         >
           <Aligner>
-            <StyledButtonName>Deposit</StyledButtonName>
+            <StyledButtonName>Deposit to Bento</StyledButtonName>
           </Aligner>
         </ButtonSelect>
       )}

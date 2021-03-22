@@ -255,7 +255,7 @@ export default function CurrencyInputPanel({
           }}
         >
           <Aligner>
-            <StyledButtonName>Withdraw</StyledButtonName>
+            <StyledButtonName>Withdraw to Wallet</StyledButtonName>
           </Aligner>
         </ButtonSelect>
       )}
