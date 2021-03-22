@@ -10,7 +10,12 @@ export default function Navigation() {
       <NavLink to="/bento/kashi" className="border-transparent py-2 px-1 border-b-2">
         <div
           className={
-            'flex items-center font-medium ' + (location.pathname === '/bento/kashi' ? 'text-white' : 'text-gray-500')
+            'flex items-center font-medium ' +
+            (location.pathname === '/bento/kashi' ||
+            location.pathname === '/bento/kashi/supply' ||
+            location.pathname === '/bento/kashi/borrow'
+              ? 'text-white'
+              : 'text-gray-500')
           }
         >
           <div className={'whitespace-nowrap text-base mr-2'}>Markets</div>
