@@ -22,6 +22,9 @@ import { formatFromBalance, formattedNum } from '../../utils'
 //import useTokenInfo from '../../sushi-hooks/queries/useTokenInfo'
 import { Search, PlusSquare, MinusSquare, ChevronLeft } from 'react-feather'
 
+import ReponsiveGrid, { Secondary, Primary } from '../Kashi/components/ResponsiveGrid'
+import { InfoCard } from '../Kashi/components'
+
 import getTokenIcon from '../../sushi-hooks/queries/getTokenIcons'
 import BentoBoxLogo from '../../assets/kashi/bento-symbol.svg'
 import BentoBoxImage from '../../assets/kashi/bento-illustration.png'
@@ -60,29 +63,17 @@ export default function BentoBalances() {
   return (
     <>
       <PageWrapper>
-        <div className="px-0 md:px-4 grid grid-cols-1 lg:grid-cols-4 gap-4">
-          <div className="hidden lg:block lg:col-span-1">
-            <div
-              className="rounded-xl h-full flex-col justify-between"
-              style={{
-                backgroundColor: theme.baseCard,
-                background: `url(${BentoBoxImage}), ${theme.baseCard}`,
-                backgroundRepeat: 'no-repeat',
-                backgroundSize: 'contain',
-                backgroundPosition: 'center bottom'
-              }}
-            >
-              <div className="p-8">
-                <div className="font-semibold text-2xl pb-4">Deposit tokens into BentoBox for all the yields.</div>
-                <div className="font-base text-base text-gray-400">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-                  dolore magna aliqua.
-                </div>
-              </div>
-              {/* <img src={BentoBoxImage} className="w-full cover" /> */}
-            </div>
-          </div>
-          <div className="col-span-3">
+        <ReponsiveGrid>
+          <Secondary>
+            <InfoCard
+              backgroundImage={BentoBoxImage}
+              title={'Deposit tokens into BentoBox for all the yields.'}
+              description={
+                'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+              }
+            />
+          </Secondary>
+          <Primary>
             <AutoColumn gap="md" justify="center">
               <AutoColumn
                 gap="md"
@@ -158,8 +149,8 @@ export default function BentoBalances() {
                 </StyledBaseCard>
               </AutoColumn>
             </AutoColumn>
-          </div>
-        </div>
+          </Primary>
+        </ReponsiveGrid>
       </PageWrapper>
     </>
   )

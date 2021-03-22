@@ -9,7 +9,9 @@ import getTokenIcon from '../../sushi-hooks/queries/getTokenIcons'
 import { formattedPercent } from '../../utils'
 import { useKashiPairs } from '../../context/kashi'
 import { AutoColumn } from '../../components/Column'
-import { SplitPane, Navigation, Search, Stats, MarketsNavigation } from './components'
+
+import ResponsiveGrid, { Secondary, Primary } from '../Kashi/components/ResponsiveGrid'
+import { SplitPane, Navigation, Search, Stats, MarketsNavigation, InfoCard } from './components'
 
 import DepositGraphic from '../../assets/kashi/deposit-graphic.png'
 
@@ -34,29 +36,17 @@ export default function KashiPairs() {
 
   return (
     <PageWrapper>
-      <div className="px-0 md:px-4 grid grid-cols-1 lg:grid-cols-4 gap-4">
-        <div className="hidden lg:block lg:col-span-1 mt-12">
-          <div
-            className="rounded-xl h-full flex-col justify-between"
-            style={{
-              backgroundColor: theme.baseCard,
-              background: `url(${DepositGraphic}), ${theme.baseCard}`,
-              backgroundRepeat: 'no-repeat',
-              backgroundSize: 'contain',
-              backgroundPosition: 'center bottom'
-            }}
-          >
-            <div className="p-8">
-              <div className="font-semibold text-2xl pb-4">Deposit tokens into BentoBox for all the yields.</div>
-              <div className="font-base text-base text-gray-400">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-                dolore magna aliqua.
-              </div>
-            </div>
-            {/* <img src={BentoBoxImage} className="w-full cover" /> */}
-          </div>
-        </div>
-        <div className="col-span-3">
+      <ResponsiveGrid>
+        <Secondary marginTop={12}>
+          <InfoCard
+            backgroundImage={DepositGraphic}
+            title={'Deposit tokens into BentoBox for all the yields.'}
+            description={
+              'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+            }
+          />
+        </Secondary>
+        <Primary>
           <div className="hidden md:block">
             <SplitPane left={<MarketsNavigation />} right={<Navigation />} />
           </div>
@@ -147,8 +137,8 @@ export default function KashiPairs() {
               </StyledBaseCard>
             </div>
           </div>
-        </div>
-      </div>
+        </Primary>
+      </ResponsiveGrid>
     </PageWrapper>
   )
 }
