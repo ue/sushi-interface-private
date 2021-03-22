@@ -327,13 +327,9 @@ export function KashiProvider({ children }: { children: JSX.Element }) {
 
       // Supply + Collateral - Borrrow
       const pairNetWorth =
-        Number(
-          Fraction.from(
-            pairUserDetails[1][i].totalAssetAmount.add(pairUserDetails[1][i].totalBorrowAmount),
-            BigNumber.from(10).pow(pairDetails[i].assetDecimals)
-          ).toString()
-        ) *
-          assetUSD +
+        // user Supply
+        Number(Fraction.from(userSupply, BigNumber.from(10).pow(pairDetails[i].assetDecimals))) * assetUSD +
+        // user Collateral
         Number(
           Fraction.from(
             BigNumber.from(pairUserDetails[1][i].userCollateralAmount),
@@ -341,6 +337,7 @@ export function KashiProvider({ children }: { children: JSX.Element }) {
           ).toString()
         ) *
           collateralUSD -
+        // user Borrowed
         Number(
           Fraction.from(
             BigNumber.from(pairUserDetails[1][i].userBorrowAmount),
