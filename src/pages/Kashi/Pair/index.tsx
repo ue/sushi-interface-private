@@ -22,7 +22,7 @@ import { theme } from 'theme'
 
 import ResponsiveGrid, { Secondary, Primary } from '../components/ResponsiveGrid'
 import { FixedScrollable, InfoCard } from '../components'
-import DepositGraphic from '../../../assets/kashi/deposit-graphic.png'
+import BorrowGraphic from '../../../assets/kashi/borrow-graphic.png'
 
 //import Charts from './Charts'
 
@@ -86,7 +86,7 @@ export default function KashiPair({
         <ResponsiveGrid>
           <Secondary marginTop={10}>
             <InfoCard
-              backgroundImage={DepositGraphic}
+              backgroundImage={BorrowGraphic}
               title={'Deposit tokens into BentoBox for all the yields.'}
               description={
                 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
