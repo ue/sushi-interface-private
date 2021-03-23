@@ -194,6 +194,15 @@ const useKashi = () => {
     }
   }, [account, addTransaction, bentoBoxContract, chainId, kashiPairContract, library])
 
+  const getAddresses = useCallback(async () => {
+    const filter = bentoBoxContract?.filters.LogDeploy(kashiPairContract?.address, null)
+    console.log('filter:', filter)
+    const events = await bentoBoxContract?.queryFilter(filter!)
+    console.log('events:', events)
+    const addresses = events?.map(event => event.args?.[2])
+    console.log('pairs:', addresses)
+  }, [bentoBoxContract])
+
   const approveAddAsset = useCallback(
     async (pairAddress: string, address: string, amount: BalanceProps) => {
       const tokenAddress = isAddressString(address)
@@ -821,6 +830,7 @@ const useKashi = () => {
     kashiApproved,
     approve,
     approveMaster,
+    getAddresses,
     approveAddAsset,
     addAsset,
     depositAddAsset,

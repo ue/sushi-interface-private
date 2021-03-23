@@ -16,7 +16,9 @@ const TestBed = () => {
   //const kashiBalances = useKashiPair('0x5a0625c24ddd563e758958f189fc9e52abaa9023')
   //console.log('kashiBalances:', kashiBalances)
 
-  const { approveAddAsset } = useKashi()
+  const { approveAddAsset, getAddresses } = useKashi()
+
+  getAddresses()
 
   //approveMaster()
 
