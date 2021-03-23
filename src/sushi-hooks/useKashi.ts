@@ -194,6 +194,57 @@ const useKashi = () => {
     }
   }, [account, addTransaction, bentoBoxContract, chainId, kashiPairContract, library])
 
+  const approveAddAsset = useCallback(
+    async (pairAddress: string, address: string, amount: BalanceProps) => {
+      const tokenAddress = isAddressString(address)
+      const pairCheckSum = isAddressString(pairAddress)
+      const kashiPairCloneContract = getContract(pairCheckSum, KASHIPAIR_ABI, library!, account!)
+
+      const signature = await signMasterContractApproval(
+        bentoBoxContract,
+        kashiPairContract?.address,
+        account!,
+        library!,
+        true,
+        chainId,
+        undefined
+      )
+      const permit = ethers.utils.splitSignature(signature)
+      const share = await bentoBoxContract?.toShare(tokenAddress, amount?.value, false)
+
+      console.log('approveAddAsset:', {
+        action: 'approve kashi, supply asset from bentobox',
+        tokenAddress: tokenAddress,
+        pairAddress: pairCheckSum,
+        kashiPairClone: kashiPairCloneContract.address,
+        account: account,
+        permit: permit,
+        amount: amount?.value,
+        share: share
+      })
+
+      try {
+        const tx = await kashiPairCloneContract?.cook(
+          [ACTION_BENTO_SETAPPROVAL, ACTION_ADD_ASSET],
+          [0, 0],
+          [
+            ethers.utils.defaultAbiCoder.encode(
+              ['address', 'address', 'bool', 'uint8', 'bytes32', 'bytes32'],
+              [account, kashiPairContract?.address, true, permit.v, permit.r, permit.s]
+            ),
+            ethers.utils.defaultAbiCoder.encode(['int256', 'address', 'bool'], [share, account, false])
+          ]
+        )
+
+        return addTransaction(tx, { summary: 'Enable Kashi, Add Asset' })
+      } catch (e) {
+        console.log(e)
+        return e
+      }
+    },
+    [account, addTransaction, bentoBoxContract, library]
+  )
+
   // Description: Add Asset from BentoBox
   // Type: Asset
   // Actions: Add
@@ -770,6 +821,7 @@ const useKashi = () => {
     kashiApproved,
     approve,
     approveMaster,
+    approveAddAsset,
     addAsset,
     depositAddAsset,
     removeAsset,

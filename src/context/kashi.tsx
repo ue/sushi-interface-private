@@ -546,7 +546,7 @@ export function KashiProvider({ children }: { children: JSX.Element }) {
     })
   }, [account, getPairs, kashiPairHelperContract])
 
-  useIntervalTransaction(pollPairs, process.env.NODE_ENV !== 'production' ? 1000 : 10000)
+  useIntervalTransaction(pollPairs, process.env.NODE_ENV !== 'production' ? 100000 : 10000)
 
   return (
     <KashiContext.Provider
