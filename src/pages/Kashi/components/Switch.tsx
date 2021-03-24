@@ -58,7 +58,7 @@ const Switch = ({
           <button
             className="w-full rounded-xl py-3 focus:outline-none"
             onClick={() => {
-              setSection(switch2key)
+              setSection(switch3key)
             }}
             style={
               section === switch3key ? { background: transparentize(0.1, '#21293a'), border: '1px solid #2d2f45' } : {}

@@ -15,6 +15,8 @@ import RemoveCollateral from './RemoveCollateralInputPanel'
 import { useKashiPair } from 'context/kashi'
 import { formattedNum, formattedPercent } from '../../../../utils'
 
+import { Switch } from '../../components'
+
 interface TokenProps {
   address: string
   symbol: string
@@ -113,36 +115,9 @@ SupplyProps) {
               </div>
             </div>
           </div>
-          {/* Switch */}
-          <div
-            className="mb-2 flex justify-between items-center py-1 px-1 rounded-xl space-x-2"
-            style={{ background: transparentize(0.5, `${theme.extraDarkPurple}`) }}
-          >
-            <button
-              className="w-full rounded-xl py-3 focus:outline-none"
-              onClick={() => {
-                setSection('Borrow')
-              }}
-              style={
-                section === 'Borrow' ? { background: transparentize(0.1, '#21293a'), border: '1px solid #2d2f45' } : {}
-              }
-            >
-              <div className="text-base font-semibold text-gray-300 text-center">Borrow</div>
-            </button>
-            <button
-              className="w-full rounded-xl py-3 focus:outline-none"
-              onClick={() => {
-                setSection('Repay')
-              }}
-              style={
-                section === 'Repay' ? { background: transparentize(0.1, '#21293a'), border: '1px solid #2d2f45' } : {}
-              }
-            >
-              <div className="text-base font-semibold text-gray-300 text-center">Repay</div>
-            </button>
-          </div>
-          <div>
-            {section === 'Borrow' && (
+          <Switch
+            switch1key={'Borrow'}
+            switch1components={
               <>
                 <AddCollateral
                   tokenAddress={collateral.address}
@@ -151,8 +126,9 @@ SupplyProps) {
                 />
                 <BorrowInputPanel tokenAddress={asset.address} tokenSymbol={asset.symbol} pairAddress={pairAddress} />
               </>
-            )}
-            {section === 'Repay' && (
+            }
+            switch2key={'Repay'}
+            switch2components={
               <>
                 <PayInputPanel tokenAddress={asset.address} tokenSymbol={asset.symbol} pairAddress={pairAddress} />
                 <RemoveCollateral
@@ -161,8 +137,10 @@ SupplyProps) {
                   pairAddress={pairAddress}
                 />
               </>
-            )}
-          </div>
+            }
+            switch3key={'Leverage'}
+            switch3components={<></>}
+          />
         </AutoColumn>
       </WrapperNoPadding>
     </>
