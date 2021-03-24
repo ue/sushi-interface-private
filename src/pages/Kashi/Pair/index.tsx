@@ -200,7 +200,7 @@ export default function KashiPair({
                       <Tabs tabs={tabs} selected={section} setSelected={setSection} />
                     </div>
                     <FixedScrollable height="26rem">
-                      <div className="py-4 px-6">
+                      <div className="py-2 px-6">
                         {pair && section === 'supply' && (
                           <Supply
                             tokenAddress={pair.asset.address}

@@ -12,6 +12,9 @@ import { useKashiPair } from 'context/kashi'
 import useKashi from 'sushi-hooks/useKashi'
 import { formatFromBalance, formatToBalance } from 'utils'
 
+import useBentoBalance from 'sushi-hooks/queries/useBentoBalance'
+import useTokenBalance from 'sushi-hooks/queries/useTokenBalance'
+
 import {
   InputRow,
   ButtonSelect,
@@ -49,6 +52,12 @@ export default function WithdrawInputPanel({
   const { account } = useActiveWeb3React()
   const theme = useTheme()
 
+  const walletBalance = useTokenBalance(tokenAddress)
+  const bentoBalance = useBentoBalance(tokenAddress)
+  const walletAmount = formatFromBalance(walletBalance?.value, walletBalance?.decimals)
+  const bentoAmount = formatFromBalance(bentoBalance?.value, bentoBalance?.decimals)
+  const balance = balanceFrom && balanceFrom === 'bento' ? bentoAmount : walletAmount
+
   const { removeAsset, removeWithdrawAsset } = useKashi()
 
   //const tokenBalanceBigInt = useTokenBalance(tokenAddress)
@@ -79,21 +88,32 @@ export default function WithdrawInputPanel({
   return (
     <>
       <InputPanel id={id}>
-        <Container cornerRadiusTopNone={true} cornerRadiusBottomNone={false}>
+        <RowBetween style={{ padding: '0.75rem 1rem 0 1rem' }}>
+          <TYPE.body color={theme.text2} fontWeight={500} fontSize={14}>
+            Withdraw <span className="font-semibold">{tokenSymbol}</span> to{' '}
+            <span>
+              {balanceFrom === 'bento' ? (
+                <StyledSwitch onClick={() => setBalanceFrom('wallet')}>Bento</StyledSwitch>
+              ) : (
+                <StyledSwitch onClick={() => setBalanceFrom('bento')}>Wallet</StyledSwitch>
+              )}
+            </span>
+          </TYPE.body>
+          {account && (
+            <TYPE.body
+              color={theme.text2}
+              fontWeight={500}
+              fontSize={14}
+              style={{ display: 'inline', cursor: 'pointer' }}
+            >
+              Balance: {balance} {tokenSymbol}
+            </TYPE.body>
+          )}
+        </RowBetween>
+        <Container>
           <LabelRow>
             <RowBetween>
-              <TYPE.body color={theme.text2} fontWeight={500} fontSize={14}>
-                Withdraw <span className="font-semibold">{tokenSymbol}</span> to{' '}
-                <span>
-                  {balanceFrom === 'bento' ? (
-                    <StyledSwitch onClick={() => setBalanceFrom('wallet')}>Bento</StyledSwitch>
-                  ) : (
-                    balanceFrom === 'wallet' && (
-                      <StyledSwitch onClick={() => setBalanceFrom('bento')}>Wallet</StyledSwitch>
-                    )
-                  )}
-                </span>
-              </TYPE.body>
+              <div></div>
               {account && (
                 <TYPE.body
                   onClick={handleMaxDeposit}
@@ -118,54 +138,49 @@ export default function WithdrawInputPanel({
               />
               {account && label !== 'To' && <StyledBalanceMax onClick={handleMaxDeposit}>MAX</StyledBalanceMax>}
             </>
-            {(approvalA === ApprovalState.NOT_APPROVED || approvalA === ApprovalState.PENDING) && (
-              <ButtonSelect disabled={approvalA === ApprovalState.PENDING} onClick={approveACallback}>
-                <Aligner>
-                  <StyledButtonName>
-                    {approvalA === ApprovalState.PENDING ? <Dots>Approving </Dots> : 'Approve'}
-                  </StyledButtonName>
-                </Aligner>
-              </ButtonSelect>
-            )}
-            {approvalA === ApprovalState.APPROVED && (
-              <ButtonSelect
-                disabled={
-                  pendingTx ||
-                  !tokenBalance ||
-                  Number(withdrawValue) === 0 ||
-                  // todo this should be a bigInt comparison
-                  Number(withdrawValue) > Number(tokenBalance)
-                }
-                onClick={async () => {
-                  setPendingTx(true)
-                  if (balanceFrom === 'wallet') {
-                    if (maxSelected) {
-                      await removeWithdrawAsset(pairAddress, tokenAddress, maxWithdrawAmountInput, true)
-                    } else {
-                      await removeWithdrawAsset(
-                        pairAddress,
-                        tokenAddress,
-                        formatToBalance(withdrawValue, decimals),
-                        false
-                      )
-                    }
-                  } else if (balanceFrom === 'bento') {
-                    if (maxSelected) {
-                      await removeAsset(pairAddress, tokenAddress, maxWithdrawAmountInput, true)
-                    } else {
-                      await removeAsset(pairAddress, tokenAddress, formatToBalance(withdrawValue, decimals), false)
-                    }
-                  }
-                  setPendingTx(false)
-                }}
-              >
-                <Aligner>
-                  <StyledButtonName>Withdraw</StyledButtonName>
-                </Aligner>
-              </ButtonSelect>
-            )}
           </InputRow>
         </Container>
+        {(approvalA === ApprovalState.NOT_APPROVED || approvalA === ApprovalState.PENDING) && (
+          <ButtonSelect disabled={approvalA === ApprovalState.PENDING} onClick={approveACallback}>
+            <Aligner>
+              <StyledButtonName>
+                {approvalA === ApprovalState.PENDING ? <Dots>Approving </Dots> : 'Approve'}
+              </StyledButtonName>
+            </Aligner>
+          </ButtonSelect>
+        )}
+        {approvalA === ApprovalState.APPROVED && (
+          <ButtonSelect
+            disabled={
+              pendingTx ||
+              !tokenBalance ||
+              Number(withdrawValue) === 0 ||
+              // todo this should be a bigInt comparison
+              Number(withdrawValue) > Number(tokenBalance)
+            }
+            onClick={async () => {
+              setPendingTx(true)
+              if (balanceFrom === 'wallet') {
+                if (maxSelected) {
+                  await removeWithdrawAsset(pairAddress, tokenAddress, maxWithdrawAmountInput, true)
+                } else {
+                  await removeWithdrawAsset(pairAddress, tokenAddress, formatToBalance(withdrawValue, decimals), false)
+                }
+              } else if (balanceFrom === 'bento') {
+                if (maxSelected) {
+                  await removeAsset(pairAddress, tokenAddress, maxWithdrawAmountInput, true)
+                } else {
+                  await removeAsset(pairAddress, tokenAddress, formatToBalance(withdrawValue, decimals), false)
+                }
+              }
+              setPendingTx(false)
+            }}
+          >
+            <Aligner>
+              <StyledButtonName>Withdraw</StyledButtonName>
+            </Aligner>
+          </ButtonSelect>
+        )}
       </InputPanel>
     </>
   )

@@ -80,32 +80,30 @@ export default function SupplyInputPanel({ tokenAddress, pairAddress, tokenSymbo
   return (
     <>
       <InputPanel id="supply-input">
-        <Container cornerRadiusBottomNone={true} cornerRadiusTopNone={false}>
-          <LabelRow>
-            <RowBetween>
-              <TYPE.body color={theme.text2} fontWeight={500} fontSize={14}>
-                Supply <span className="font-semibold">{tokenSymbol}</span> from{' '}
-                <span>
-                  {balanceFrom === 'bento' ? (
-                    <StyledSwitch onClick={() => setBalanceFrom('wallet')}>Bento</StyledSwitch>
-                  ) : (
-                    <StyledSwitch onClick={() => setBalanceFrom('bento')}>Wallet</StyledSwitch>
-                  )}
-                </span>
-              </TYPE.body>
-              {account && (
-                <TYPE.body
-                  onClick={handleMaxDeposit}
-                  color={theme.text2}
-                  fontWeight={500}
-                  fontSize={14}
-                  style={{ display: 'inline', cursor: 'pointer' }}
-                >
-                  Balance: {tokenBalance} {tokenSymbol}
-                </TYPE.body>
+        <RowBetween style={{ padding: '0.75rem 1rem 0 1rem' }}>
+          <TYPE.body color={theme.text2} fontWeight={500} fontSize={14}>
+            Supply <span className="font-semibold">{tokenSymbol}</span> from{' '}
+            <span>
+              {balanceFrom === 'bento' ? (
+                <StyledSwitch onClick={() => setBalanceFrom('wallet')}>Bento</StyledSwitch>
+              ) : (
+                <StyledSwitch onClick={() => setBalanceFrom('bento')}>Wallet</StyledSwitch>
               )}
-            </RowBetween>
-          </LabelRow>
+            </span>
+          </TYPE.body>
+          {account && (
+            <TYPE.body
+              onClick={handleMaxDeposit}
+              color={theme.text2}
+              fontWeight={500}
+              fontSize={14}
+              style={{ display: 'inline', cursor: 'pointer' }}
+            >
+              Balance: {tokenBalance} {tokenSymbol}
+            </TYPE.body>
+          )}
+        </RowBetween>
+        <Container>
           <InputRow>
             <>
               <NumericalInput
@@ -117,49 +115,49 @@ export default function SupplyInputPanel({ tokenAddress, pairAddress, tokenSymbo
               />
               {account && <StyledBalanceMax onClick={handleMaxDeposit}>MAX</StyledBalanceMax>}
             </>
-            {(approvalA === ApprovalState.NOT_APPROVED || approvalA === ApprovalState.PENDING) && (
-              <ButtonSelect disabled={approvalA === ApprovalState.PENDING} onClick={approveACallback}>
-                <Aligner>
-                  <StyledButtonName>
-                    {approvalA === ApprovalState.PENDING ? <Dots>Approving </Dots> : 'Approve'}
-                  </StyledButtonName>
-                </Aligner>
-              </ButtonSelect>
-            )}
-            {approvalA === ApprovalState.APPROVED && (
-              <ButtonSelect
-                disabled={
-                  pendingTx ||
-                  !tokenBalance ||
-                  Number(depositValue) === 0 ||
-                  // todo this should be a bigInt comparison
-                  Number(depositValue) > Number(tokenBalance)
-                }
-                onClick={async () => {
-                  setPendingTx(true)
-                  if (balanceFrom === 'wallet') {
-                    if (maxSelected) {
-                      await depositAddAsset(pairAddress, tokenAddress, maxDepositAmountInput)
-                    } else {
-                      await depositAddAsset(pairAddress, tokenAddress, formatToBalance(depositValue, decimals))
-                    }
-                  } else if (balanceFrom === 'bento') {
-                    if (maxSelected) {
-                      await addAsset(pairAddress, tokenAddress, maxDepositAmountInput)
-                    } else {
-                      await addAsset(pairAddress, tokenAddress, formatToBalance(depositValue, decimals))
-                    }
-                  }
-                  setPendingTx(false)
-                }}
-              >
-                <Aligner>
-                  <StyledButtonName>Supply</StyledButtonName>
-                </Aligner>
-              </ButtonSelect>
-            )}
           </InputRow>
         </Container>
+        {(approvalA === ApprovalState.NOT_APPROVED || approvalA === ApprovalState.PENDING) && (
+          <ButtonSelect disabled={approvalA === ApprovalState.PENDING} onClick={approveACallback}>
+            <Aligner>
+              <StyledButtonName>
+                {approvalA === ApprovalState.PENDING ? <Dots>Approving </Dots> : 'Approve'}
+              </StyledButtonName>
+            </Aligner>
+          </ButtonSelect>
+        )}
+        {approvalA === ApprovalState.APPROVED && (
+          <ButtonSelect
+            disabled={
+              pendingTx ||
+              !tokenBalance ||
+              Number(depositValue) === 0 ||
+              // todo this should be a bigInt comparison
+              Number(depositValue) > Number(tokenBalance)
+            }
+            onClick={async () => {
+              setPendingTx(true)
+              if (balanceFrom === 'wallet') {
+                if (maxSelected) {
+                  await depositAddAsset(pairAddress, tokenAddress, maxDepositAmountInput)
+                } else {
+                  await depositAddAsset(pairAddress, tokenAddress, formatToBalance(depositValue, decimals))
+                }
+              } else if (balanceFrom === 'bento') {
+                if (maxSelected) {
+                  await addAsset(pairAddress, tokenAddress, maxDepositAmountInput)
+                } else {
+                  await addAsset(pairAddress, tokenAddress, formatToBalance(depositValue, decimals))
+                }
+              }
+              setPendingTx(false)
+            }}
+          >
+            <Aligner>
+              <StyledButtonName>Supply</StyledButtonName>
+            </Aligner>
+          </ButtonSelect>
+        )}
       </InputPanel>
     </>
   )

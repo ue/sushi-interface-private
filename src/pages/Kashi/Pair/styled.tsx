@@ -9,7 +9,6 @@ export const InputRow = styled.div`
 
 export const ButtonSelect = styled.button`
   align-items: center;
-  height: 2.2rem;
   font-size: 20px;
   font-weight: 500;
   background-color: ${({ theme }) => theme.primary1};
@@ -22,9 +21,9 @@ export const ButtonSelect = styled.button`
   cursor: pointer;
   user-select: none;
   border: none;
-  padding: 0 0.5rem;
-  margin: 0 0.25rem;
-  width: 6rem;
+  padding: 0.8rem 0.5rem;
+  margin: 2px 0;
+  width: 100%;
   &:focus {
     box-shadow: 0 0 0 1pt ${({ theme }) => darken(0.05, theme.primary1)};
     background-color: ${({ theme }) => darken(0.05, theme.primary1)};
@@ -61,7 +60,7 @@ export const InputPanel = styled.div<{ hideInput?: boolean }>`
   ${({ theme }) => theme.flexColumnNoWrap}
   position: relative;
   border-radius: ${({ hideInput }) => (hideInput ? '8px' : '20px')};
-  background-color: ${({ theme }) => theme.bg2};
+  /* background-color: ${({ theme }) => theme.bg2}; */
   z-index: 1;
 `
 
@@ -74,6 +73,8 @@ export const Container = styled.div<{
   border-radius: ${({ cornerRadiusBottomNone }) => cornerRadiusBottomNone && '12px 12px 0 0'};
   border: 1px solid ${({ theme }) => theme.bg2};
   background-color: ${({ theme }) => theme.bg1};
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
 `
 
 export const StyledButtonName = styled.span<{ active?: boolean }>`

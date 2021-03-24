@@ -6,8 +6,7 @@ import SupplyInputPanel from './SupplyInputPanel'
 import WithdrawInputPanel from './WithdrawInputPanel'
 import { useKashiPair } from 'context/kashi'
 import { formattedNum, formattedPercent } from 'utils'
-
-import Input from '../../components/Input'
+import { Switch } from '../../components'
 
 interface SupplyProps {
   tokenAddress: string
@@ -72,30 +71,30 @@ export default function Supply({ tokenAddress, tokenSymbol, pairAddress }: Suppl
               </div>
             </div>
           </div>
-          <div className="pt-2">
-            {/* <Input
-              action="Supply"
-              tokenAddress={tokenAddress}
-              tokenSymbol={tokenSymbol}
-              pairAddress={pairAddress}
-              direction="from"
-              label="Balance"
-              value="0"
-            /> */}
-
-            <SupplyInputPanel
-              id="supply-collateral-token"
-              tokenAddress={tokenAddress}
-              tokenSymbol={tokenSymbol}
-              pairAddress={pairAddress}
-            />
-            <WithdrawInputPanel
-              id="withdraw-collateral-token"
-              tokenAddress={tokenAddress}
-              tokenSymbol={tokenSymbol}
-              pairAddress={pairAddress}
-            />
-          </div>
+          <Switch
+            switch1key={'Deposit'}
+            switch1components={
+              <>
+                <SupplyInputPanel
+                  id="supply-collateral-token"
+                  tokenAddress={tokenAddress}
+                  tokenSymbol={tokenSymbol}
+                  pairAddress={pairAddress}
+                />
+              </>
+            }
+            switch2key={'Withdraw'}
+            switch2components={
+              <>
+                <WithdrawInputPanel
+                  id="withdraw-collateral-token"
+                  tokenAddress={tokenAddress}
+                  tokenSymbol={tokenSymbol}
+                  pairAddress={pairAddress}
+                />
+              </>
+            }
+          />
         </AutoColumn>
       </WrapperNoPadding>
     </>
