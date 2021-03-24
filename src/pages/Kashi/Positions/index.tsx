@@ -32,7 +32,7 @@ export default function Positions() {
     <>
       <PageWrapper>
         <ResponsiveGrid>
-          <Secondary marginTop={12}>
+          <Secondary>
             <InfoCard
               backgroundImage={DepositGraphic}
               title={'Deposit tokens into BentoBox for all the yields.'}

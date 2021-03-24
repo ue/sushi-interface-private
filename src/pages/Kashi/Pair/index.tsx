@@ -84,7 +84,7 @@ export default function KashiPair({
     <>
       <PageWrapper>
         <ResponsiveGrid>
-          <Secondary marginTop={10}>
+          <Secondary>
             <InfoCard
               backgroundImage={BorrowGraphic}
               title={'Deposit tokens into BentoBox for all the yields.'}
@@ -125,8 +125,7 @@ export default function KashiPair({
                   <div
                     className="py-4 px-6"
                     style={{
-                      //borderRight: '2px solid rgba(0, 0, 0, 0.1)',
-                      borderBottom: '2px solid rgba(0, 0, 0, 0.1)',
+                      borderBottom: `4px solid ${section === 'supply' ? theme.primaryBlue : theme.primaryPink}`,
                       background: theme.mediumDarkPurple
                     }}
                   >
@@ -188,12 +187,6 @@ export default function KashiPair({
                           </div>
                         </div>
                       </div>
-                      {/* <div className="hidden sm:block">
-                    <div>
-                      <div className="text-base sm:text-lg font-bold">{pair && 'Chainlink'}</div>
-                      <div className="text-xs sm:text-base font-semibold text-gray-400">Oracle ↗</div>
-                    </div>
-                  </div> */}
                     </div>
                   </div>
                   {/* Tabs */}
@@ -206,12 +199,7 @@ export default function KashiPair({
                     <Tabs tabs={tabs} selected={section} setSelected={setSection} />
                   </div>
                   <FixedScrollable height="26rem">
-                    <div
-                      className="py-4 px-6"
-                      // style={{
-                      //   borderBottom: '2px solid rgba(0, 0, 0, 0.1)'
-                      // }}
-                    >
+                    <div className="py-4 px-6">
                       {pair && section === 'supply' && (
                         <Supply
                           tokenAddress={pair.asset.address}
@@ -220,16 +208,7 @@ export default function KashiPair({
                         />
                       )}
                       {pair && section === 'borrow' && (
-                        <Borrow
-                          collateral={pair.collateral}
-                          asset={pair.asset}
-                          pairAddress={pairAddress}
-                          //healthPercentage={pair.user.health.percentage}
-                          //collateralUSD={pair.user.collateral.usdString}
-                          //borrowUSD={pair.user.borrow.usdString}
-                          //maxRemove={pair.user.collateral.max}
-                          //maxBorrow={pair.user.borrow.max}
-                        />
+                        <Borrow collateral={pair.collateral} asset={pair.asset} pairAddress={pairAddress} />
                       )}
                       {/* {pair && section === 'leverage' && <Leverage />} */}
                     </div>

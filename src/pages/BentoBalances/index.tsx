@@ -66,6 +66,7 @@ export default function BentoBalances() {
         <ReponsiveGrid>
           <Secondary>
             <InfoCard
+              withLogo={false}
               backgroundImage={BentoBoxImage}
               title={'Deposit tokens into BentoBox for all the yields.'}
               description={

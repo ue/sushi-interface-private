@@ -47,7 +47,7 @@ const BorrowPositions = ({ borrowPositions }: any) => {
           </div>
         )}
 
-        <FixedScrollable height="22rem">
+        <FixedScrollable height="24rem">
           {borrowPositions &&
             borrowPositions.length > 0 &&
             borrowPositions.map((pair: any) => {

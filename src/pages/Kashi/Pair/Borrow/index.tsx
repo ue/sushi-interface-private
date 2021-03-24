@@ -69,7 +69,7 @@ SupplyProps) {
     <>
       <WrapperNoPadding id="stake-page">
         <AutoColumn gap="sm">
-          <div className="px-2 grid grid-cols-3 gap-2">
+          <div className="px-2 py-4 grid grid-cols-3 gap-2">
             <div className="col-span-1 items-start">
               <div className="flex">
                 <div className="text-xs sm:text-sm text-gray-300">Borrow Used</div>
@@ -77,7 +77,7 @@ SupplyProps) {
               </div>
               <div className="text-2xl sm:text-3xl font-semibold">{formattedPercent(healthPercentage)}</div>
             </div>
-            <div className="col-span-2 mt-5">
+            <div className="col-span-2">
               <div className="flex justify-between">
                 <div className="text-xs sm:text-sm text-gray-300">Your Collateral:</div>
                 <div className="text-right">
@@ -115,7 +115,7 @@ SupplyProps) {
           </div>
           {/* Switch */}
           <div
-            className="mt-4 mb-2 flex justify-between items-center py-1 px-1 rounded-xl space-x-2"
+            className="mb-2 flex justify-between items-center py-1 px-1 rounded-xl space-x-2"
             style={{ background: transparentize(0.5, `${theme.extraDarkPurple}`) }}
           >
             <button

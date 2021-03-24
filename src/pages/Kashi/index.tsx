@@ -10,7 +10,7 @@ import { formattedPercent } from '../../utils'
 import { useKashiPairs } from '../../context/kashi'
 
 import ResponsiveGrid, { Secondary, Primary } from '../Kashi/components/ResponsiveGrid'
-import { InfoCard, SectionHeader } from './components'
+import { InfoCard, SectionHeader, FixedScrollable } from './components'
 
 import DepositGraphic from '../../assets/kashi/deposit-graphic.png'
 
@@ -36,7 +36,7 @@ export default function KashiPairs() {
   return (
     <PageWrapper>
       <ResponsiveGrid>
-        <Secondary marginTop={12}>
+        <Secondary>
           <InfoCard
             backgroundImage={DepositGraphic}
             title={'Deposit tokens into BentoBox for all the yields.'}
@@ -62,14 +62,14 @@ export default function KashiPairs() {
                   <div className="text-right hover:text-gray-400">Supply APY</div>
                   <div className="text-right hover:text-gray-400">Borrow APY</div>
                 </div>
-                <div className="flex-col space-y-2">
+                <FixedScrollable height="24rem">
                   {pairs.length > 0 &&
                     pairs.map(pair => {
                       return (
                         <div key={pair.address}>
                           <Link to={'/bento/kashi/pair/' + String(pair.address).toLowerCase()} className="block">
                             <div
-                              className="py-4 px-4 items-center align-center grid grid-cols-5 md:grid-cols-6 text-sm font-semibold"
+                              className="mb-2 py-4 px-4 items-center align-center grid grid-cols-5 md:grid-cols-6 text-sm font-semibold"
                               style={{ background: '#19212e', borderRadius: '12px' }}
                             >
                               <div className="flex space-x-2 col-span-2 md:col-span-1">
@@ -95,7 +95,7 @@ export default function KashiPairs() {
                         </div>
                       )
                     })}
-                </div>
+                </FixedScrollable>
               </StyledBaseCard>
             </div>
           </div>
