@@ -12,6 +12,9 @@ import { useKashiPair } from 'context/kashi'
 import useKashi from 'sushi-hooks/useKashi'
 import { formatFromBalance, formatToBalance } from 'utils'
 
+import useBentoBalance from 'sushi-hooks/queries/useBentoBalance'
+import useTokenBalance from 'sushi-hooks/queries/useTokenBalance'
+
 import {
   InputRow,
   ButtonSelect,
@@ -31,11 +34,17 @@ interface RemoveInputPanelProps {
 }
 
 export default function RemoveInputPanel({ tokenAddress, tokenSymbol, pairAddress }: RemoveInputPanelProps) {
-  const [balanceFrom, setBalanceFrom] = useState<any>('bento')
   const { account } = useActiveWeb3React()
   const theme = useTheme()
 
   const { removeCollateral, removeWithdrawCollateral } = useKashi()
+
+  const [balanceFrom, setBalanceFrom] = useState<any>('bento')
+  const walletBalance = useTokenBalance(tokenAddress)
+  const bentoBalance = useBentoBalance(tokenAddress)
+  const walletAmount = formatFromBalance(walletBalance?.value, walletBalance?.decimals)
+  const bentoAmount = formatFromBalance(bentoBalance?.value, bentoBalance?.decimals)
+  const balance = balanceFrom && balanceFrom === 'bento' ? bentoAmount : walletAmount
 
   const kashiBalances = useKashiPair(pairAddress)
   const assetBalance = kashiBalances?.user.collateral.max.balance
@@ -66,21 +75,32 @@ export default function RemoveInputPanel({ tokenAddress, tokenSymbol, pairAddres
   return (
     <>
       <InputPanel>
-        <Container cornerRadiusTopNone={true}>
+        <RowBetween style={{ padding: '0.75rem 1rem 0 1rem' }}>
+          <TYPE.body color={theme.text2} fontWeight={500} fontSize={14}>
+            Withdraw <span className="font-semibold">{tokenSymbol}</span> to{' '}
+            <span>
+              {balanceFrom === 'bento' ? (
+                <StyledSwitch onClick={() => setBalanceFrom('wallet')}>Bento</StyledSwitch>
+              ) : (
+                <StyledSwitch onClick={() => setBalanceFrom('bento')}>Wallet</StyledSwitch>
+              )}
+            </span>
+          </TYPE.body>
+          {account && (
+            <TYPE.body
+              color={theme.text2}
+              fontWeight={500}
+              fontSize={14}
+              style={{ display: 'inline', cursor: 'pointer' }}
+            >
+              Balance: {balance} {tokenSymbol}
+            </TYPE.body>
+          )}
+        </RowBetween>
+        <Container>
           <LabelRow>
             <RowBetween>
-              <TYPE.body color={theme.text2} fontWeight={500} fontSize={14}>
-                Withdraw <span className="font-semibold">{tokenSymbol}</span> to{' '}
-                <span>
-                  {balanceFrom === 'bento' ? (
-                    <StyledSwitch onClick={() => setBalanceFrom('wallet')}>Bento</StyledSwitch>
-                  ) : (
-                    balanceFrom === 'wallet' && (
-                      <StyledSwitch onClick={() => setBalanceFrom('bento')}>Wallet</StyledSwitch>
-                    )
-                  )}
-                </span>
-              </TYPE.body>
+              <div></div>
               {account && (
                 <TYPE.body
                   onClick={handleMaxDeposit}
@@ -89,7 +109,7 @@ export default function RemoveInputPanel({ tokenAddress, tokenSymbol, pairAddres
                   fontSize={14}
                   style={{ display: 'inline', cursor: 'pointer' }}
                 >
-                  Safe: {tokenBalance} {tokenSymbol}
+                  Safe Withdrawable: {tokenBalance} {tokenSymbol}
                 </TYPE.body>
               )}
             </RowBetween>

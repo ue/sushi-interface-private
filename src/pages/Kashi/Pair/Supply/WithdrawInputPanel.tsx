@@ -42,8 +42,6 @@ export default function WithdrawInputPanel({
   tokenSymbol,
   pairAddress
 }: WithdrawInputPanelProps) {
-  const [balanceFrom, setBalanceFrom] = useState<any>('bento')
-
   const kashiBalances = useKashiPair(pairAddress)
   const assetBalance = kashiBalances?.user.supply.balance
 
@@ -52,6 +50,7 @@ export default function WithdrawInputPanel({
   const { account } = useActiveWeb3React()
   const theme = useTheme()
 
+  const [balanceFrom, setBalanceFrom] = useState<any>('bento')
   const walletBalance = useTokenBalance(tokenAddress)
   const bentoBalance = useBentoBalance(tokenAddress)
   const walletAmount = formatFromBalance(walletBalance?.value, walletBalance?.decimals)

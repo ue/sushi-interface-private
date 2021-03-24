@@ -79,34 +79,30 @@ export default function AddCollateralInputPanel({
   return (
     <>
       <InputPanel id="add-collateral-input-panel">
-        <Container cornerRadiusBottomNone={true}>
-          <LabelRow>
-            <RowBetween>
-              <TYPE.body color={theme.text2} fontWeight={500} fontSize={14}>
-                Add <span className="font-semibold">{tokenSymbol}</span> from{' '}
-                <span>
-                  {balanceFrom === 'bento' ? (
-                    <StyledSwitch onClick={() => setBalanceFrom('wallet')}>Bento</StyledSwitch>
-                  ) : (
-                    balanceFrom === 'wallet' && (
-                      <StyledSwitch onClick={() => setBalanceFrom('bento')}>Wallet</StyledSwitch>
-                    )
-                  )}
-                </span>
-              </TYPE.body>
-              {account && (
-                <TYPE.body
-                  onClick={handleMaxDeposit}
-                  color={theme.text2}
-                  fontWeight={500}
-                  fontSize={14}
-                  style={{ display: 'inline', cursor: 'pointer' }}
-                >
-                  Max: {tokenBalance} {tokenSymbol}
-                </TYPE.body>
+        <RowBetween style={{ padding: '0.75rem 1rem 0 1rem' }}>
+          <TYPE.body color={theme.text2} fontWeight={500} fontSize={14}>
+            Add <span className="font-semibold">{tokenSymbol}</span> from{' '}
+            <span>
+              {balanceFrom === 'bento' ? (
+                <StyledSwitch onClick={() => setBalanceFrom('wallet')}>Bento</StyledSwitch>
+              ) : (
+                balanceFrom === 'wallet' && <StyledSwitch onClick={() => setBalanceFrom('bento')}>Wallet</StyledSwitch>
               )}
-            </RowBetween>
-          </LabelRow>
+            </span>
+          </TYPE.body>
+          {account && (
+            <TYPE.body
+              onClick={handleMaxDeposit}
+              color={theme.text2}
+              fontWeight={500}
+              fontSize={14}
+              style={{ display: 'inline', cursor: 'pointer' }}
+            >
+              Max: {tokenBalance} {tokenSymbol}
+            </TYPE.body>
+          )}
+        </RowBetween>
+        <Container>
           <InputRow>
             <>
               <NumericalInput
