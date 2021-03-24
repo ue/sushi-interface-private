@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/camelcase */
 import { useActiveWeb3React } from 'hooks'
 import useIntervalTransaction from 'hooks/useIntervalTransaction'
 import React, { createContext, useContext, useReducer, useCallback } from 'react'
@@ -130,24 +131,42 @@ export function KashiProvider({ children }: { children: JSX.Element }) {
     //console.log('pairUserDetails_inputs:', account, pairAddresses)
     const pairUserDetails = await kashiPairHelperContract?.pollPairs(account, pairAddresses)
     //console.log('pairUserDetails:', pairUserDetails)
-    //console.log('details:', pairDetails[0].collateral)
 
-    // Get SushiSwap Exchange pricing data for USD estimates
-    const collateralSushiData = await sushiData.exchange.token({
-      // eslint-disable-next-line @typescript-eslint/camelcase
-      token_address: getMainnetAddress(pairDetails?.[0]?.collateral)
+    // Get list of tokens and fetch pricing information
+    const tokensWithDuplicates: any[] = []
+    pairDetails.map((pair: { collateral: string; asset: string }) => {
+      tokensWithDuplicates.push(pair.collateral)
+      tokensWithDuplicates.push(pair.asset)
     })
-    const assetSushiData = await sushiData.exchange.token({
-      // eslint-disable-next-line @typescript-eslint/camelcase
-      token_address: getMainnetAddress(pairDetails?.[0]?.asset)
-    })
+    const tokens = Array.from(new Set(tokensWithDuplicates)) // remove duplicates
+    const tokensWithDetails = await Promise.all(
+      tokens.map(async (address: string) => {
+        try {
+          const details = await sushiData.exchange.token({
+            token_address: getMainnetAddress(address)
+          })
+          return { address: address, details: details }
+        } catch (e) {
+          return { address: address, details: { derivedETH: 0 } }
+        }
+      })
+    )
     const exchangeEthPrice = await sushiData.exchange.ethPrice()
-    const collateralUSD = collateralSushiData?.derivedETH * exchangeEthPrice
-    const assetUSD = assetSushiData?.derivedETH * exchangeEthPrice
-    // console.log('collateralUSD:', collateralUSD)
-    // console.log('assetUSD:', assetUSD)
+    const pricing = tokensWithDetails.map((token): any => {
+      if (token) {
+        return { address: token.address, priceUSD: token?.details?.derivedETH * exchangeEthPrice }
+      }
+    })
+    //console.log('tokensWithDetails:', tokensWithDetails)
+    //console.log('pricing:', pricing)
 
     const pairs = pairAddresses.map((address, i) => {
+      // Find pricing information
+      const asset = pricing.find(pair => pair.address === pairDetails[i].asset)
+      const assetUSD = asset.priceUSD
+      const collateral = pricing.find(pair => pair.address === pairDetails[i].collateral)
+      const collateralUSD = collateral.priceUSD
+
       function accrue(amount: BigNumber) {
         return amount
           .mul(
@@ -307,9 +326,7 @@ export function KashiProvider({ children }: { children: JSX.Element }) {
 
       // Supply + Collateral - Borrrow
       const pairNetWorth =
-        // user Supply
         Number(Fraction.from(userSupply, BigNumber.from(10).pow(pairDetails[i].assetDecimals))) * assetUSD +
-        // user Collateral
         Number(
           Fraction.from(
             BigNumber.from(pairUserDetails[1][i].userCollateralAmount),
@@ -317,7 +334,6 @@ export function KashiProvider({ children }: { children: JSX.Element }) {
           ).toString()
         ) *
           collateralUSD -
-        // user Borrowed
         Number(
           Fraction.from(
             BigNumber.from(pairUserDetails[1][i].userBorrowAmount),
@@ -546,7 +562,7 @@ export function KashiProvider({ children }: { children: JSX.Element }) {
     })
   }, [account, getPairs, kashiPairHelperContract])
 
-  useIntervalTransaction(pollPairs, process.env.NODE_ENV !== 'production' ? 100000 : 10000)
+  useIntervalTransaction(pollPairs, process.env.NODE_ENV !== 'production' ? 1000 : 10000)
 
   return (
     <KashiContext.Provider
