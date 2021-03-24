@@ -105,49 +105,49 @@ export default function RemoveInputPanel({ tokenAddress, tokenSymbol, pairAddres
               />
               {account && <StyledBalanceMax onClick={handleMaxDeposit}>MAX</StyledBalanceMax>}
             </>
-            {(approvalA === ApprovalState.NOT_APPROVED || approvalA === ApprovalState.PENDING) && (
-              <ButtonSelect disabled={approvalA === ApprovalState.PENDING} onClick={approveACallback}>
-                <Aligner>
-                  <StyledButtonName>
-                    {approvalA === ApprovalState.PENDING ? <Dots>Approving </Dots> : 'Approve'}
-                  </StyledButtonName>
-                </Aligner>
-              </ButtonSelect>
-            )}
-            {approvalA === ApprovalState.APPROVED && (
-              <ButtonSelect
-                disabled={
-                  pendingTx ||
-                  !tokenBalance ||
-                  Number(repayValue) === 0 ||
-                  // todo this should be a bigInt comparison
-                  Number(repayValue) > Number(tokenBalance)
-                }
-                onClick={async () => {
-                  setPendingTx(true)
-                  if (balanceFrom === 'wallet') {
-                    if (maxSelected) {
-                      await repay(pairAddress, tokenAddress, maxWithdrawAmountInput, true)
-                    } else {
-                      await repay(pairAddress, tokenAddress, formatToBalance(repayValue, decimals), false)
-                    }
-                  } else if (balanceFrom === 'bento') {
-                    if (maxSelected) {
-                      await repayFromBento(pairAddress, tokenAddress, maxWithdrawAmountInput, true)
-                    } else {
-                      await repayFromBento(pairAddress, tokenAddress, formatToBalance(repayValue, decimals), false)
-                    }
-                  }
-                  setPendingTx(false)
-                }}
-              >
-                <Aligner>
-                  <StyledButtonName>Repay</StyledButtonName>
-                </Aligner>
-              </ButtonSelect>
-            )}
           </InputRow>
         </Container>
+        {(approvalA === ApprovalState.NOT_APPROVED || approvalA === ApprovalState.PENDING) && (
+          <ButtonSelect disabled={approvalA === ApprovalState.PENDING} onClick={approveACallback}>
+            <Aligner>
+              <StyledButtonName>
+                {approvalA === ApprovalState.PENDING ? <Dots>Approving </Dots> : 'Approve'}
+              </StyledButtonName>
+            </Aligner>
+          </ButtonSelect>
+        )}
+        {approvalA === ApprovalState.APPROVED && (
+          <ButtonSelect
+            disabled={
+              pendingTx ||
+              !tokenBalance ||
+              Number(repayValue) === 0 ||
+              // todo this should be a bigInt comparison
+              Number(repayValue) > Number(tokenBalance)
+            }
+            onClick={async () => {
+              setPendingTx(true)
+              if (balanceFrom === 'wallet') {
+                if (maxSelected) {
+                  await repay(pairAddress, tokenAddress, maxWithdrawAmountInput, true)
+                } else {
+                  await repay(pairAddress, tokenAddress, formatToBalance(repayValue, decimals), false)
+                }
+              } else if (balanceFrom === 'bento') {
+                if (maxSelected) {
+                  await repayFromBento(pairAddress, tokenAddress, maxWithdrawAmountInput, true)
+                } else {
+                  await repayFromBento(pairAddress, tokenAddress, formatToBalance(repayValue, decimals), false)
+                }
+              }
+              setPendingTx(false)
+            }}
+          >
+            <Aligner>
+              <StyledButtonName>Repay</StyledButtonName>
+            </Aligner>
+          </ButtonSelect>
+        )}
       </InputPanel>
     </>
   )

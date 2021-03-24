@@ -105,49 +105,49 @@ export default function BorrowInputPanel({ tokenAddress, tokenSymbol, pairAddres
               />
               {/* {account && <StyledBalanceMax onClick={handleMaxDeposit}>MAX</StyledBalanceMax>} */}
             </>
-            {(approvalA === ApprovalState.NOT_APPROVED || approvalA === ApprovalState.PENDING) && (
-              <ButtonSelect disabled={approvalA === ApprovalState.PENDING} onClick={approveACallback}>
-                <Aligner>
-                  <StyledButtonName>
-                    {approvalA === ApprovalState.PENDING ? <Dots>Approving </Dots> : 'Approve'}
-                  </StyledButtonName>
-                </Aligner>
-              </ButtonSelect>
-            )}
-            {approvalA === ApprovalState.APPROVED && (
-              <ButtonSelect
-                disabled={
-                  pendingTx ||
-                  !tokenBalance ||
-                  Number(withdrawValue) === 0 ||
-                  // todo this should be a bigInt comparison
-                  Number(withdrawValue) > Number(tokenBalance)
-                }
-                onClick={async () => {
-                  setPendingTx(true)
-                  if (balanceFrom === 'wallet') {
-                    if (maxSelected) {
-                      await borrowWithdraw(pairAddress, tokenAddress, maxWithdrawAmountInput, true)
-                    } else {
-                      await borrowWithdraw(pairAddress, tokenAddress, formatToBalance(withdrawValue, decimals), false)
-                    }
-                  } else if (balanceFrom === 'bento') {
-                    if (maxSelected) {
-                      await borrow(pairAddress, tokenAddress, maxWithdrawAmountInput, true)
-                    } else {
-                      await borrow(pairAddress, tokenAddress, formatToBalance(withdrawValue, decimals), false)
-                    }
-                  }
-                  setPendingTx(false)
-                }}
-              >
-                <Aligner>
-                  <StyledButtonName>Borrow</StyledButtonName>
-                </Aligner>
-              </ButtonSelect>
-            )}
           </InputRow>
         </Container>
+        {(approvalA === ApprovalState.NOT_APPROVED || approvalA === ApprovalState.PENDING) && (
+          <ButtonSelect disabled={approvalA === ApprovalState.PENDING} onClick={approveACallback}>
+            <Aligner>
+              <StyledButtonName>
+                {approvalA === ApprovalState.PENDING ? <Dots>Approving </Dots> : 'Approve'}
+              </StyledButtonName>
+            </Aligner>
+          </ButtonSelect>
+        )}
+        {approvalA === ApprovalState.APPROVED && (
+          <ButtonSelect
+            disabled={
+              pendingTx ||
+              !tokenBalance ||
+              Number(withdrawValue) === 0 ||
+              // todo this should be a bigInt comparison
+              Number(withdrawValue) > Number(tokenBalance)
+            }
+            onClick={async () => {
+              setPendingTx(true)
+              if (balanceFrom === 'wallet') {
+                if (maxSelected) {
+                  await borrowWithdraw(pairAddress, tokenAddress, maxWithdrawAmountInput, true)
+                } else {
+                  await borrowWithdraw(pairAddress, tokenAddress, formatToBalance(withdrawValue, decimals), false)
+                }
+              } else if (balanceFrom === 'bento') {
+                if (maxSelected) {
+                  await borrow(pairAddress, tokenAddress, maxWithdrawAmountInput, true)
+                } else {
+                  await borrow(pairAddress, tokenAddress, formatToBalance(withdrawValue, decimals), false)
+                }
+              }
+              setPendingTx(false)
+            }}
+          >
+            <Aligner>
+              <StyledButtonName>Borrow</StyledButtonName>
+            </Aligner>
+          </ButtonSelect>
+        )}
       </InputPanel>
     </>
   )
