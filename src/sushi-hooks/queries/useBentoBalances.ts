@@ -93,12 +93,29 @@ const useBentoBalances = () => {
     const balances = await bentoHelperContract?.getBalances(account, tokens)
     //console.log('balances:', balances, bentoHelperContract)
 
+    // const tokenAmounts = await Promise.all(
+    //   balances.map(async (balance: any) => {
+    //     try {
+    //       console.log('balance:', balance, balance.bentoShare)
+    //       const converted = await bentoBoxContract?.toAmount(balance.token, balance.bentoShare, true)
+    //       const amount = BigNumber.from(balance.bentoShare).isZero() ? BigNumber.from(0) : converted
+    //       return { address: balance.token, amount: amount }
+    //     } catch (e) {
+    //       return { address: balance.token, amount: BigNumber.from(0) }
+    //     }
+    //   })
+    // )
+    // console.log('amounts:', tokenAmounts)
+
     const balancesWithDetails = tokens.map((tokenAddress, i) => {
       const amount = BigNumber.from(balances[i].bentoShare).isZero()
         ? BigNumber.from(0)
         : BigNumber.from(balances[i].bentoBalance)
             .mul(BigNumber.from(balances[i].bentoAmount))
             .div(BigNumber.from(balances[i].bentoShare))
+
+      //@ts-ignore
+      //console.log(amount, tokenAmounts[i].amount)
 
       // attempt to calculate usdValue, token might not exist on sushiswap mainnet oracle
       // todo: this needs refactor for better precision
